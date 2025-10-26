@@ -37,7 +37,7 @@
 	var/ignore_vision = FALSE
 
 	/// Movement sound, same function as with simple mobs. Remove when 173 becomes one
-	var/movement_sound = null
+	var/movement_sound = 'sounds/scp/173/rattle.ogg'
 
 	//AI config
 
@@ -255,7 +255,7 @@
 	log_and_message_admins("put [src] through SCP-914 on \"[mode]\" mode.", user, src)
 	switch(mode)
 		if(MODE_ROUGH, MODE_COARSE)
-			movement_sound = null
+			movement_sound = 'sounds/scp/173/rattle.ogg'
 			bump_attack = FALSE
 			ignore_vision = FALSE
 			snap_cooldown_time = initial(snap_cooldown_time)
@@ -269,7 +269,7 @@
 		if(MODE_VERY_FINE) // God has abandoned you
 			playsound(src, 'sounds/effects/screech2.ogg', 150, FALSE, 32)
 			to_chat(src, SPAN_USERDANGER("You are unstoppable, nothing can stand on your path now!"))
-			movement_sound = 'sounds/scp/173/rattle.ogg'
+			movement_sound = null // Silent ubitsa
 			bump_attack = TRUE
 			ignore_vision = TRUE
 			snap_cooldown_time = 0
