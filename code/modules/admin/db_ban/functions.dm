@@ -526,50 +526,18 @@
 			qdel(select_query)
 
 	show_browser(usr, output,"window=lookupbans;size=900x700")
-
-// === Simple Ban Log System ===
-
+// === Simple Ban Log ===
 /proc/log_ban_locally(banned_ckey, admin_ckey, reason, duration, ban_type)
-	// Логируем в файл
-	var/log_message = "БАН | [time2text(world.realtime, "YYYY-MM-DD HH:MM")] | Игрок: [banned_ckey] | Админ: [admin_ckey] | Причина: [reason] | Длительность: [duration]м"
-	
-	// В лог сервера
+	var/log_message = "BAN | [time2text(world.realtime, "YYYY-MM-DD HH:MM")] | Player: [banned_ckey] | Admin: [admin_ckey] | Reason: [reason] | Duration: [duration]m"
 	world.log << log_message
-	
-	// В отдельный файл
 	var/log_file = file("data/ban_logs.txt")
 	text2file("[log_message]\n", log_file)
-	
 	return 1
 
 /client/proc/test_ban_log()
 	set name = "Test Ban Log"
 	set category = "Admin.Debug"
-	
-	if(!check_rights(R_BAN)) 
-		return
-	
-	log_ban_locally("TestPlayer", usr.ckey, "Тестовый бан", 60, "Тест")
-	to_chat(usr, "<span class='adminnotice'>Тест записан в data/ban_logs.txt</span>")
-
-/client/proc/add_ban_log()
-	set name = "Add Ban Log" 
-	set category = "Admin"
-	
-	if(!check_rights(R_BAN))
-		return
-	
-	var/banned_ckey = input("Ключ игрока:", "Лог бана") as text
-	if(!banned_ckey)
-		return
-		
-	var/reason = input("Причина бана:", "Лог бана") as text
-	if(!reason)
-		reason = "Не указана"
-	
-	var/duration = input("Длительность (минут, 0=перма):", "Лог бана") as num
-	if(!duration)
-		duration = 0
-	
-	log_ban_locally(banned_ckey, usr.ckey, reason, duration, "Ручной лог")
-	to_chat(usr, "<span class='adminnotice'>Бан [banned_ckey] записан в файл</span>")
+	if(!check_rights(R_BAN)) return
+	log_ban_locally("TestPlayer", usr.ckey, "Test ban", 60, "Test")
+	to_chat(usr, "<span class='adminnotice'>Test written to data/ban_logs.txt</span>")
+// === End Ban Log ===
