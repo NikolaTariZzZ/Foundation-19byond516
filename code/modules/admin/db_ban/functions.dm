@@ -122,6 +122,7 @@
 	var/sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null)"
 	var/datum/db_query/query_insert = SSdbcore.NewQuery(sql)
 	query_insert.Execute()
+	send_discord_ban(ckey, a_ckey, reason, duration)
 	var/setter = a_ckey
 	if(usr)
 		to_chat(usr, SPAN_NOTICE("Ban saved to database."))
@@ -526,18 +527,9 @@
 			qdel(select_query)
 
 	show_browser(usr, output,"window=lookupbans;size=900x700")
-// === Simple Ban Log ===
-/proc/log_ban_locally(banned_ckey, admin_ckey, reason, duration, ban_type)
-	var/log_message = "BAN | [time2text(world.realtime, "YYYY-MM-DD HH:MM")] | Player: [banned_ckey] | Admin: [admin_ckey] | Reason: [reason] | Duration: [duration]m"
-	world.log << log_message
-	var/log_file = file("data/ban_logs.txt")
-	text2file("[log_message]\n", log_file)
-	return 1
-
-/client/proc/test_ban_log()
-	set name = "Test Ban Log"
-	set category = "Admin.Debug"
-	if(!check_rights(R_BAN)) return
-	log_ban_locally("TestPlayer", usr.ckey, "Test ban", 60, "Test")
-	to_chat(usr, "<span class='adminnotice'>Test written to data/ban_logs.txt</span>")
-// === End Ban Log ===
+// Простая отправка в Discord
+/proc/send_discord_ban(ckey, admin, reason, duration)
+	spawn(0)
+		var/webhook = "https://discord.com/api/webhooks/1434262975430135930/xJw47cQdMO1w-QlQOdT6VvhCaDuT7_2eBbUkUP4ZNZ_q67ddGdNalz4Sc3ZGNoIUs3Wj"
+		var/msg = "🚫 **БАН ВЫДАН**\n👤 Игрок: [ckey]\n🛡️ Админ: [admin]\n📝 Причина: [reason]\n⏰ Длительность: [duration] минут"
+		world.Export("[webhook]?wait=1", list("content" = msg))
