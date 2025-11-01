@@ -527,116 +527,10 @@
 
 	show_browser(usr, output,"window=lookupbans;size=900x700")
 
-// === Discord Ban Webhook System ===
-// Вставь свой Discord Webhook URL здесь
-#define BAN_WEBHOOK_URL "https://discord.com/api/webhooks/1434262975430135930/xJw47cQdMO1w-QlQOdT6VvhCaDuT7_2eBbUkUP4ZNZ_q67ddGdNalz4Sc3ZGNoIUs3Wj"
-
-/proc/log_ban_to_discord(banned_ckey, admin_ckey, reason, duration, ban_type = "Игра")
-	if(!BAN_WEBHOOK_URL || BAN_WEBHOOK_URL == "https://discord.com/api/webhooks/1434262975430135930/xJw47cQdMO1w-QlQOdT6VvhCaDuT7_2eBbUkUP4ZNZ_q67ddGdNalz4Sc3ZGNoIUs3Wj")
-		world.log << "Ban webhook: URL not configured"
-		return
-	
-	var/message = "🚫 **БАН ВЫДАН**\n"
-	message += "👤 **Игрок:** [banned_ckey || "Неизвестно"]\n"
-	message += "🛡️ **Администратор:** [admin_ckey || "Сервер"]\n" 
-	message += "📝 **Причина:** [reason || "Не указана"]\n"
-	
-	if(duration && duration > 0)
-		message += "⏰ **Длительность:** [duration] минут\n"
-	else
-		message += "⏰ **Длительность:** Перманентно\n"
-	
-	message += "🔧 **Тип:** [ban_type]\n"
-	message += "🕐 **Время:** [time2text(world.realtime, "YYYY-MM-DD HH:MM:SS")]"
-	
-	world.log << "Sending ban to Discord: [banned_ckey]"
-	
-	// Простая отправка в Discord
-	spawn(0)
-		var/url = "[BAN_WEBHOOK_URL]?wait=1"
-		world.Export(url, list("content" = message))
-
-
-/client/proc/test_ban_webhook()
-	set name = "Test Ban Webhook"
-	set category = "Admin.Debug"
-	
-	if(!check_rights(R_BAN)) 
-		return
-	
-	log_ban_to_discord(
-		"TestPlayer", 
-		usr.ckey, 
-		"Тестовый бан для проверки webhook", 
-		60, 
-		"Тест"
-	)
-	to_chat(usr, "<span class='adminnotice'>Тестовый бан отправлен в Discord</span>")
-
-// === Discord Ban Webhook System ===
-
-/proc/send_discord_ban(banned_ckey, admin_ckey, reason, duration, ban_type)
-	var/webhook_url = "https://discord.com/api/webhooks/1434262975430135930/xJw47cQdMO1w-QlQOdT6VvhCaDuT7_2eBbUkUP4ZNZ_q67ddGdNalz4Sc3ZGNoIUs3Wj"
-	
-	var/message = "🚫 **БАН ВЫДАН**\n"
-	message += "👤 **Игрок:** [banned_ckey]\n"
-	message += "🛡️ **Администратор:** [admin_ckey]\n" 
-	message += "📝 **Причина:** [reason]\n"
-	
-	if(duration > 0)
-		message += "⏰ **Длительность:** [duration] минут\n"
-	else
-		message += "⏰ **Длительность:** Перманентно\n"
-	
-	message += "🔧 **Тип:** [ban_type]\n"
-	message += "🕐 **Время:** [time2text(world.realtime, "YYYY-MM-DD HH:MM:SS")]"
-	
-	world.log << "Отправка бана в Discord: [banned_ckey]"
-	
-	spawn(0)
-		var/result = world.Export("[webhook_url]?wait=1", list("content" = message))
-		if(result)
-			world.log << "Discord: Успешно"
-		else
-			world.log << "Discord: Ошибка отправки"
-
-/client/proc/test_simple_webhook()
-	set name = "Test Simple Webhook"
-	set category = "Admin.Debug"
-	
-	if(!check_rights(R_BAN)) 
-		return
-	
-	world.log << "=== ТЕСТ ПРОСТОГО ВЕБХУКА ==="
-	send_discord_ban("TestPlayer", usr.ckey, "Тестовый бан", 60, "Тест")
-	to_chat(usr, "<span class='adminnotice'>Тест отправлен. Проверь логи сервера.</span>")
-
-/client/proc/manual_log_ban()
-	set name = "Manual Log Ban" 
-	set category = "Admin"
-	
-	if(!check_rights(R_BAN))
-		return
-	
-	var/banned_ckey = input("Ключ игрока:", "Лог бана") as text
-	if(!banned_ckey)
-		return
-		
-	var/reason = input("Причина бана:", "Лог бана") as text
-	if(!reason)
-		reason = "Не указана"
-	
-	var/duration = input("Длительность (минут, 0=перма):", "Лог бана") as num
-	if(!duration)
-		duration = 0
-	
-	send_discord_ban(banned_ckey, usr.ckey, reason, duration, "Ручной лог")
-	to_chat(usr, "<span class='adminnotice'>Бан [banned_ckey] записан</span>")
-
-// === Простая система логов ===
+// === Simple Ban Log System ===
 
 /proc/log_ban_locally(banned_ckey, admin_ckey, reason, duration, ban_type)
-	// Логируем в файл вместо Discord
+	// Логируем в файл
 	var/log_message = "БАН | [time2text(world.realtime, "YYYY-MM-DD HH:MM")] | Игрок: [banned_ckey] | Админ: [admin_ckey] | Причина: [reason] | Длительность: [duration]м"
 	
 	// В лог сервера
@@ -648,8 +542,8 @@
 	
 	return 1
 
-/client/proc/test_local_log()
-	set name = "Test Local Log"
+/client/proc/test_ban_log()
+	set name = "Test Ban Log"
 	set category = "Admin.Debug"
 	
 	if(!check_rights(R_BAN)) 
@@ -658,8 +552,8 @@
 	log_ban_locally("TestPlayer", usr.ckey, "Тестовый бан", 60, "Тест")
 	to_chat(usr, "<span class='adminnotice'>Тест записан в data/ban_logs.txt</span>")
 
-/client/proc/manual_log_ban()
-	set name = "Manual Log Ban" 
+/client/proc/add_ban_log()
+	set name = "Add Ban Log" 
 	set category = "Admin"
 	
 	if(!check_rights(R_BAN))
