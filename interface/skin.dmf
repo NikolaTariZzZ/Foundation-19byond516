@@ -10,36 +10,36 @@ macro "default"
 
 
 menu "menu"
-	elem
+	elem 
 		name = "&File"
 		command = ""
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Save screenshot as...\tShift+F2"
 		command = ".screenshot"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = ""
 		command = ""
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Reconnect"
 		command = ".reconnect"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Check ping"
 		command = ".ping"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Quit"
 		command = ".quit"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Size"
 		command = ""
 		saved-params = "is-checked"
@@ -86,7 +86,7 @@ menu "menu"
 		can-check = true
 		group = "size"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Scaling"
 		command = ""
 		saved-params = "is-checked"
@@ -111,11 +111,11 @@ menu "menu"
 		can-check = true
 		group = "scale"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Help"
 		command = ""
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Admin help\tF1"
 		command = "adminhelp"
 		category = "&Help"
@@ -125,23 +125,29 @@ menu "menu"
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
-		pos = 281,0
+		pos = 434,0
 		size = 640x440
 		anchor1 = -1,-1
 		anchor2 = -1,-1
+		background-color = none
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		statusbar = false
-		is-maximized = true
-		icon = 'icons\\ss13_64.png'
+		icon = 'icons\\Scp-logo-ru_64.png'
 		macro = "default"
 		menu = "menu"
+		outer-size = 662x526
+		outer-pos = 434,0
+		inner-size = 640x440
+		inner-pos = 11,75
+		screen-size = 1920x1128
 	elem "split"
 		type = CHILD
 		pos = 3,0
-		size = 634x440
+		size = 637x440
 		anchor1 = 0,0
 		anchor2 = 100,100
+		background-color = none
 		saved-params = "splitter"
 		left = "mapwindow"
 		right = "infowindow"
@@ -152,16 +158,20 @@ window "mainwindow"
 		size = 200x200
 		anchor1 = -1,-1
 		anchor2 = -1,-1
+		background-color = none
 		is-visible = false
 		saved-params = ""
+		inner-background-color = none
 	elem "tooltip"
 		type = BROWSER
 		pos = 0,0
 		size = 999x999
 		anchor1 = -1,-1
 		anchor2 = -1,-1
+		background-color = none
 		is-visible = false
 		saved-params = ""
+		inner-background-color = none
 
 window "mapwindow"
 	elem "mapwindow"
@@ -189,12 +199,13 @@ window "mapwindow"
 		pos = 0,464
 		size = 280x16
 		anchor1 = 0,100
-		is-visible = true
+		anchor2 = -1,-1
+		text-color = #ffffff
+		background-color = #222222
+		border = line
+		saved-params = ""
 		text = ""
 		align = left
-		background-color = #222222
-		text-color = #ffffff
-		border = line
 
 window "infowindow"
 	elem "infowindow"
@@ -277,11 +288,8 @@ window "outputwindow"
 		size = 640x480
 		anchor1 = -1,-1
 		anchor2 = -1,-1
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
-		outer-size = 658x549
-		inner-size = 640x502
 	elem "input"
 		type = INPUT
 		pos = 2,460
@@ -298,7 +306,6 @@ window "outputwindow"
 		size = 40x19
 		anchor1 = 100,100
 		anchor2 = -1,-1
-		background-color = none
 		border = line
 		saved-params = "is-checked"
 		text = "OOC"
@@ -311,7 +318,6 @@ window "outputwindow"
 		size = 40x19
 		anchor1 = 100,100
 		anchor2 = -1,-1
-		background-color = none
 		border = line
 		saved-params = "is-checked"
 		text = "Say"
@@ -324,7 +330,6 @@ window "outputwindow"
 		size = 40x19
 		anchor1 = 100,100
 		anchor2 = -1,-1
-		background-color = none
 		border = line
 		saved-params = "is-checked"
 		text = "Me"
@@ -348,7 +353,6 @@ window "output_legacy"
 		size = 640x456
 		anchor1 = -1,-1
 		anchor2 = -1,-1
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
 	elem "output"
@@ -367,7 +371,6 @@ window "output_browser"
 		size = 640x456
 		anchor1 = -1,-1
 		anchor2 = -1,-1
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
 	elem "browseroutput"
@@ -376,7 +379,6 @@ window "output_browser"
 		size = 640x456
 		anchor1 = 0,0
 		anchor2 = 100,100
-		background-color = none
 		saved-params = ""
 
 window "popupwindow"
@@ -386,13 +388,10 @@ window "popupwindow"
 		size = 148x120
 		anchor1 = -1,-1
 		anchor2 = -1,-1
-		background-color = none
 		is-visible = false
 		saved-params = "pos;size;is-minimized;is-maximized"
 		statusbar = false
 		can-resize = false
-		outer-size = 166x167
-		inner-size = 148x120
 
 window "statwindow"
 	elem "statwindow"
@@ -401,17 +400,14 @@ window "statwindow"
 		size = 640x480
 		anchor1 = -1,-1
 		anchor2 = -1,-1
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
-		outer-size = 658x549
-		inner-size = 640x502
 	elem "statbrowser"
 		type = BROWSER
 		pos = 0,0
 		size = 640x480
 		anchor1 = 0,0
 		anchor2 = 100,100
-		background-color = none
 		is-visible = false
 		saved-params = ""
+

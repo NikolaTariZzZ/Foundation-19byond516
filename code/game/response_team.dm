@@ -47,7 +47,7 @@ var/global/send_emergency_team = 0 // Used for automagic response teams
 /client/verb/JoinResponseTeam()
 
 	set name = "Join MTF Squad"
-	set category = "IC"
+	set category = "OOC"
 
 	if(!MayRespawn(1))
 		to_chat(usr, SPAN_WARNING("You cannot join the response team at this time."))

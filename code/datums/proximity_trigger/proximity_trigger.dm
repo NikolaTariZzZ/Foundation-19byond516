@@ -115,7 +115,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	for(var/t in (seen_turfs_ - new_seen_turfs_))
 		UnregisterSignal(t, COMSIG_ENTERED)
 	for(var/t in (new_seen_turfs_ - seen_turfs_))
-		RegisterSignal(t, COMSIG_ENTERED, TYPE_PROC_REF(/datum/proximity_trigger, on_turf_entered))
+		RegisterSignal(t, COMSIG_ENTERED, nameof(.proc/on_turf_entered))
 
 	seen_turfs_ = new_seen_turfs_
 

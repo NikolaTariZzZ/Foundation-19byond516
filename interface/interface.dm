@@ -63,5 +63,5 @@
 
 /client/verb/edit_hotkeys()
 	set name = "Edit Hotkeys"
-	set category = "Preferences"
+	set category = "OOC"
 	prefs.macros.tgui_interact(usr)

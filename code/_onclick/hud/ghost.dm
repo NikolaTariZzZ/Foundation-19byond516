@@ -11,7 +11,7 @@
 	var/atom/movable/screen/using
 	adding = list()
 
-	using = new /atom/movable/screen/ghost/orbit()
+	using = new /atom/movable/screen/ghost/follow()
 	using.screen_loc = ui_ghost_orbit
 	adding += using
 
@@ -21,6 +21,14 @@
 
 	using = new /atom/movable/screen/ghost/teleport()
 	using.screen_loc = ui_ghost_teleport
+	adding += using
+
+	using = new /atom/movable/screen/ghost/move_up()
+	using.screen_loc = ui_ghost_move_up
+	adding += using
+
+	using = new /atom/movable/screen/ghost/move_down()
+	using.screen_loc = ui_ghost_move_down
 	adding += using
 
 	using = new /atom/movable/screen/ghost/become_scp()

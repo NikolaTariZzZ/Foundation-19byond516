@@ -1,16 +1,17 @@
 /atom/movable/screen/ghost
 	icon = 'icons/hud/screen_ghost.dmi'
 
-/atom/movable/screen/ghost/orbit
+/atom/movable/screen/ghost/follow
 	name = "Orbit"
-	icon_state = "orbit"
+	icon_state = "follow"
 
 /atom/movable/screen/ghost/orbit/Click()
+
 	var/mob/observer/ghost/G = usr
 	var/list/A = list()
 	A |= GLOB.living_mob_list_
 	A |= GLOB.player_list
-	var/mob/fh = tgui_input_list(G, "Choose a player to orbit", "Orbit", A)
+	var/mob/fh = tgui_input_list(G, "Choose a player to follow", "follow", A)
 	if(istype(fh))
 		G.follow(fh)
 	else if(isnull(fh))
@@ -49,3 +50,21 @@
 	var/A = tgui_input_list(G, "Teleport", "Teleport to an Area", area_repository.get_areas_by_z_level())
 	if(A != "Cancel")
 		G.dead_tele(A)
+
+/atom/movable/screen/ghost/move_up
+	name = "Move Up"
+	icon_state = "move_up"
+	screen_loc = ui_ghost_move_up
+
+/atom/movable/screen/ghost/move_up/Click(location, control, params)
+	var/mob/M = usr
+	M.up()
+
+/atom/movable/screen/ghost/move_down
+	name = "Move Down"
+	icon_state = "move_down"
+	screen_loc = ui_ghost_move_down
+
+/atom/movable/screen/ghost/move_down/Click(location, control, params)
+	var/mob/M = usr
+	M.down()

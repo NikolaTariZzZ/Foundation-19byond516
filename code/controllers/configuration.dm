@@ -122,7 +122,7 @@ var/list/gamemode_cache = list()
 
 	var/use_loyalty_implants = 0
 
-	var/allow_diagonal_movement = FALSE
+	var/allow_diagonal_movement = 1
 
 	var/welder_vision = 1
 	var/generate_map = 0

@@ -521,7 +521,7 @@
 
 /client/verb/character_setup()
 	set name = "Character Setup"
-	set category = "Preferences"
+	set category = "OOC"
 	prefs?.open_setup_window(usr)
 
 /client/proc/apply_fps(client_fps)

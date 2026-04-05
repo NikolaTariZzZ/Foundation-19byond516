@@ -84,6 +84,7 @@
 		/decl/audio/track/dread,
 		/decl/audio/track/animosity,
 		/decl/audio/track/animosity_v2,
+		/decl/audio/track/surface_area,
 		/decl/audio/track/main_astowo,
 		/decl/audio/track/final_flash,
 		/decl/audio/track/duplicity_and_disillusion,
