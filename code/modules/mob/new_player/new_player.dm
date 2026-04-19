@@ -403,7 +403,7 @@
 
 /mob/new_player/verb/next_lobby_track()
 	set name = "Play Different Lobby Track"
-	set category = "OOC"
+	set category = "Server"
 
 	if(get_preference_value(/datum/client_preference/play_lobby_music) == GLOB.PREF_NO)
 		return
