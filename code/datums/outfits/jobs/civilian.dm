@@ -1,3 +1,6 @@
+/decl/hierarchy/outfit/job/civ/classd/New()
+	..()
+	BACKPACK_OVERRIDE_CLASSD
 
 /decl/hierarchy/outfit/job/civ/classd
 	name = OUTFIT_JOB_NAME("Class D")
@@ -7,7 +10,6 @@
 	l_pocket = /obj/item/paper/dclass_orientation
 	id_type = /obj/item/card/id/classd
 	pda_type = null
-	back = null
 
 /decl/hierarchy/outfit/job/civ/classd/post_equip(mob/living/carbon/human/H)
 	..()
