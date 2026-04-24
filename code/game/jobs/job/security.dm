@@ -229,7 +229,7 @@
 //##
 
 /datum/job/raisa
-	title = "Агент RAISA"
+	title = "Агент АПАИБ"
 	department = "Входная Зона"
 	selection_color = "#601c1c"
 	department_flag = SEC|ECZ|BUR
