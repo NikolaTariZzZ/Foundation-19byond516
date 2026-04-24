@@ -105,11 +105,11 @@
 	else if(load_failed)
 		dat += "Loading your savefile failed. Please adminhelp for assistance."
 	else
-		dat += "Slot - "
-		dat += "<a href='byond://?src=\ref[src];load=1'>Load slot</a> - "
-		dat += "<a href='byond://?src=\ref[src];save=1'>Save slot</a> - "
-		dat += "<a href='byond://?src=\ref[src];resetslot=1'>Reset slot</a> - "
-		dat += "<a href='byond://?src=\ref[src];reload=1'>Reload slot</a>"
+		dat += "Слот - "
+		dat += "<a href='byond://?src=\ref[src];load=1'>Загрузить слот</a> - "
+		dat += "<a href='byond://?src=\ref[src];save=1'>Сохранить слот</a> - "
+		dat += "<a href='byond://?src=\ref[src];resetslot=1'>Обнулить слот</a> - "
+		dat += "<a href='byond://?src=\ref[src];reload=1'>Перезагрузить слот</a>"
 
 	dat += "<br>"
 	dat += player_setup.header()
@@ -120,7 +120,7 @@
 /datum/preferences/proc/open_setup_window(mob/user)
 	if (!SScharacter_setup.initialized)
 		return
-	var/datum/browser/popup = new(user, "preferences_browser", "Character Setup", 1200, 800, src)
+	var/datum/browser/popup = new(user, "preferences_browser", "Настройка Персонажа", 1200, 800, src)
 	var/content = {"
 	<script type='text/javascript'>
 		function update_content(data){

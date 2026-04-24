@@ -1,6 +1,6 @@
 /datum/map/site53
-	name = "Site 53"
-	full_name = "Foundation Site 53"
+	name = "Зона 53"
+	full_name = "Зона Фонда 53"
 	path = "site53"
 	flags = MAP_HAS_BRANCH | MAP_HAS_RANK
 	station_levels = list(1,2,3,4)
@@ -21,13 +21,13 @@
 	allowed_spawns = list("Cryogenic Storage", "D-Cells")
 	default_spawn = "Cryogenic Storage"
 
-	station_name  = "Foundation Site 53"
-	station_short = "Site 53"
-	dock_name     = "Emergency Site-91"
-	boss_name     = "Foundation North American Command"
-	boss_short    = "Regional Command"
-	company_name  = "SCP Foundation"
-	company_short = "Foundation"
+	station_name  = "Зона Фонда 53"
+	station_short = "Зона 53"
+	dock_name     = "Аварийная Зона-91"
+	boss_name     = "Североамериканское командование Фонда"
+	boss_short    = "Региональное командование"
+	company_name  = "Фонд SCP"
+	company_short = "Фонд"
 
 	//These should probably be moved into the evac controller...
 	shuttle_docked_message = "The outbound train is now boarding at the Train Station. It will depart in approximately %ETD%."
