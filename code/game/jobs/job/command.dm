@@ -109,7 +109,7 @@
 	class = CLASS_B
 	hud_icon = "hudcommsofficer"
 	alt_titles = list("Офицер связи") // Это моя отсебятина, ну а с другой стороны чебы нет?
-	requirements = list("Communications Technician" = 360)
+	requirements = list("Коммуникационный техник" = 360)
 
 	access = list(
 		ACCESS_SCIENCE_LVL1,
