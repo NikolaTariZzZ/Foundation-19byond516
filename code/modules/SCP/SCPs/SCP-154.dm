@@ -1,7 +1,7 @@
-// ==================== СНАРЯД ====================
+// ==================== PROJECTILE ====================
 /obj/item/projectile/bone_spear
-    name = "Костяной снаряд"
-    desc = "Острый, как бритва, осколок кости, летящий на огромной скорости."
+    name = "bone spear"
+    desc = "A razor-sharp bone shard flying at incredible speed."
     icon = 'icons/SCP/scp-154.dmi'
     icon_state = "bone_spear"
     damage = 100
@@ -9,10 +9,10 @@
     armor_penetration = 50
     speed = 0.1
 
-// ==================== ЛУК ====================
+// ==================== BOW ====================
 /obj/item/gun/projectile/scp154_bow
-    name = "Призрачный лук"
-    desc = "Большой, нечеткий, бестелесный лук. Тетивы нет, но жест её натягивания даёт тот же эффект."
+    name = "phantom bow"
+    desc = "A large, blurry, incorporeal bow. There is no bowstring, but the gesture of drawing it produces the same effect."
     icon = 'icons/SCP/scp-154.dmi'
     icon_state = "bow"
     item_state = "bow_held"
@@ -42,14 +42,14 @@
     if(istype(M))
         M.regenerate_icons()
 
-// Z на луке — натянуть или выстрелить
+// Z on bow — draw or fire
 /obj/item/gun/projectile/scp154_bow/attack_self(mob/user)
     if(!ishuman(user) || !parent_bracelets)
         return
 
     var/mob/living/carbon/human/H = user
     if(H.gloves != parent_bracelets)
-        to_chat(user, SPAN_WARNING("Браслеты больше не на вас! Лук исчезает."))
+        to_chat(user, SPAN_WARNING("The bracelets are no longer on you! The bow vanishes."))
         qdel(src)
         return
 
@@ -61,18 +61,18 @@
 
     bow_drawn = TRUE
     user.visible_message(
-        SPAN_WARNING("[user] поднимает призрачный лук и натягивает невидимую тетиву!"),
-        SPAN_NOTICE("Вы поднимаете призрачный лук и натягиваете невидимую тетиву. Кости вашей руки начинают вибрировать от напряжения."))
+        SPAN_WARNING("[user] raises the phantom bow and draws the invisible bowstring!"),
+        SPAN_NOTICE("You raise the phantom bow and draw the invisible bowstring. The bones in your arm begin to vibrate from the tension."))
     update_icon()
 
-// Клик по цели — выстрел только если натянут
+// Click on target — fire only if drawn
 /obj/item/gun/projectile/scp154_bow/afterattack(atom/target, mob/living/user, flag, params)
     if(!ishuman(user) || !parent_bracelets)
         return
 
     var/mob/living/carbon/human/H = user
     if(H.gloves != parent_bracelets)
-        to_chat(user, SPAN_WARNING("Браслеты больше не на вас! Лук исчезает."))
+        to_chat(user, SPAN_WARNING("The bracelets are no longer on you! The bow vanishes."))
         qdel(src)
         return
 
@@ -80,7 +80,7 @@
         return
 
     if(!bow_drawn)
-        to_chat(user, SPAN_WARNING("Сначала натяните тетиву."))
+        to_chat(user, SPAN_WARNING("Draw the bowstring first."))
         return
 
     bow_drawn = FALSE
@@ -101,11 +101,11 @@
     var/right_broken = right_hand && (right_hand.status & ORGAN_BROKEN)
 
     if(!left_hand && !right_hand)
-        to_chat(user, SPAN_WARNING("У вас нет рук, чтобы выстрелить!"))
+        to_chat(user, SPAN_WARNING("You have no arms to fire with!"))
         return
 
     if(left_broken && right_broken)
-        to_chat(user, SPAN_WARNING("Обе ваши руки сломаны! Вы не можете выстрелить, пока не исцелитесь."))
+        to_chat(user, SPAN_WARNING("Both of your arms are broken! You cannot fire until you are healed."))
         bow_drawn = TRUE
         update_icon()
         return
@@ -114,23 +114,23 @@
         if(user.hand)
             if(left_hand && !(left_hand.status & ORGAN_BROKEN))
                 active_hand = left_hand
-                user.visible_message(SPAN_WARNING("[user] перехватывает лук в левую руку."))
+                user.visible_message(SPAN_WARNING("[user] switches the bow to their left hand."))
             else
-                to_chat(user, SPAN_WARNING("Ваша правая рука сломана, а левая тоже недоступна!"))
+                to_chat(user, SPAN_WARNING("Your right arm is broken and your left arm is also unavailable!"))
                 bow_drawn = TRUE
                 update_icon()
                 return
         else
             if(right_hand && !(right_hand.status & ORGAN_BROKEN))
                 active_hand = right_hand
-                user.visible_message(SPAN_WARNING("[user] перехватывает лук в правую руку."))
+                user.visible_message(SPAN_WARNING("[user] switches the bow to their right hand."))
             else
-                to_chat(user, SPAN_WARNING("Ваша левая рука сломана, а правая тоже недоступна!"))
+                to_chat(user, SPAN_WARNING("Your left arm is broken and your right arm is also unavailable!"))
                 bow_drawn = TRUE
                 update_icon()
                 return
 
-    to_chat(user, SPAN_DANGER("Вы отпускаете призрачную тетиву и кости вашей руки с хрустом вырываются наружу, превращаясь в смертоносный снаряд!"))
+    to_chat(user, SPAN_DANGER("You release the phantom bowstring and the bones of your arm burst out with a sickening crunch, forming a deadly projectile!"))
     user.emote("scream")
 
     active_hand.fracture()
@@ -143,25 +143,25 @@
 
     parent_bracelets.start_healing(user)
 
-// Выпал из рук — исчезает
+// Dropped — vanishes
 /obj/item/gun/projectile/scp154_bow/dropped(mob/user)
     if(parent_bracelets)
-        to_chat(user, SPAN_NOTICE("Призрачный лук исчезает, втягиваясь обратно в браслеты."))
+        to_chat(user, SPAN_NOTICE("The phantom bow vanishes, retreating back into the bracelets."))
     . = ..()
     qdel(src)
 
-// Попытка надеть в другой слот — исчезает
+// Attempt to equip to another slot — vanishes
 /obj/item/gun/projectile/scp154_bow/equipped(mob/user, slot)
     if(slot == slot_l_hand || slot == slot_r_hand)
         return ..()
     if(parent_bracelets)
-        to_chat(user, SPAN_WARNING("Призрачный лук не может существовать вне ваших рук и исчезает."))
+        to_chat(user, SPAN_WARNING("The phantom bow cannot exist outside of your hands and vanishes."))
     qdel(src)
 
-// ==================== БРАСЛЕТЫ ====================
+// ==================== BRACELETS ====================
 /obj/item/clothing/gloves/scp154
-    name = "Pair of bronze bracelets"
-    desc = "Пара простых бронзовых браслетов. На вид безобидны, но от них исходит странное тепло."
+    name = "pair of bronze bracelets"
+    desc = "A pair of simple bronze bracelets. They appear harmless, but a strange warmth emanates from them."
     icon = 'icons/SCP/scp-154.dmi'
     icon_state = "bracelets"
     item_state = "bracelets"
@@ -173,7 +173,7 @@
     . = ..()
     if(slot == slot_gloves)
         current_wearer = user
-        to_chat(user, SPAN_NOTICE("Браслеты плотно обхватывают ваши запястья. Вы чувствуете, как сила течет по вашим рукам."))
+        to_chat(user, SPAN_NOTICE("The bracelets tighten around your wrists. You feel power flowing through your arms."))
         user.regenerate_icons()
     else
         stop_healing()
@@ -192,9 +192,9 @@
         deltimer(heal_timer_id)
         heal_timer_id = null
     if(current_wearer)
-        to_chat(current_wearer, SPAN_WARNING("Связь с браслетами прерывается, и исцеляющая энергия рассеивается."))
+        to_chat(current_wearer, SPAN_WARNING("The connection to the bracelets is severed, and the healing energy dissipates."))
 
-// Alt+Click на надетых браслетах — призвать/убрать лук
+// Alt+Click on worn bracelets — summon/dismiss bow
 /obj/item/clothing/gloves/scp154/AltClick(mob/user)
     . = ..()
     if(!ishuman(user))
@@ -206,17 +206,17 @@
 
     if(active_bow)
         QDEL_NULL(active_bow)
-        to_chat(H, SPAN_NOTICE("Призрачный лук исчезает, втягиваясь обратно в браслеты."))
+        to_chat(H, SPAN_NOTICE("The phantom bow vanishes, retreating back into the bracelets."))
         return
 
     active_bow = new /obj/item/gun/projectile/scp154_bow(src)
     H.put_in_active_hand(active_bow)
-    to_chat(H, SPAN_NOTICE("Браслеты начинают светиться! В вашей руке материализуется призрачный лук, сотканный из чистой энергии."))
+    to_chat(H, SPAN_NOTICE("The bracelets begin to glow! A phantom bow, woven from pure energy, materializes in your hand."))
 
-// Verb — запасной способ призыва/убирания лука
+// Verb — alternate way to summon/dismiss bow
 /obj/item/clothing/gloves/scp154/verb/summon_bow()
     set name = "Summon SCP-154 Bow"
-    set desc = "Призвать или убрать призрачный лук."
+    set desc = "Summon or dismiss the phantom bow."
     set category = "Object"
     set src in usr
 
@@ -225,22 +225,22 @@
 
     var/mob/living/carbon/human/H = usr
     if(H.gloves != src)
-        to_chat(H, SPAN_WARNING("Вы должны носить браслеты на руках."))
+        to_chat(H, SPAN_WARNING("You must wear the bracelets on your hands."))
         return
 
     if(active_bow)
         QDEL_NULL(active_bow)
-        to_chat(H, SPAN_NOTICE("Призрачный лук исчезает, втягиваясь обратно в браслеты."))
+        to_chat(H, SPAN_NOTICE("The phantom bow vanishes, retreating back into the bracelets."))
         return
 
     active_bow = new /obj/item/gun/projectile/scp154_bow(src)
     H.put_in_active_hand(active_bow)
-    to_chat(H, SPAN_NOTICE("Браслеты начинают светиться! В вашей руке материализуется призрачный лук, сотканный из чистой энергии."))
+    to_chat(H, SPAN_NOTICE("The bracelets begin to glow! A phantom bow, woven from pure energy, materializes in your hand."))
 
 /obj/item/clothing/gloves/scp154/proc/start_healing(mob/living/carbon/human/user)
     if(heal_timer_id)
         deltimer(heal_timer_id)
-    to_chat(user, SPAN_NOTICE("Браслеты начинают вибрировать, направляя энергию на восстановление ваших рук. Это займет около 20 секунд."))
+    to_chat(user, SPAN_NOTICE("The bracelets begin to vibrate, channeling energy to restore your arms. This will take about 20 seconds."))
     heal_timer_id = addtimer(CALLBACK(src, .proc/heal_bones), 20 SECONDS, TIMER_STOPPABLE)
 
 /obj/item/clothing/gloves/scp154/proc/heal_bones()
@@ -249,10 +249,10 @@
         return
     var/mob/living/carbon/human/H = current_wearer
     if(H.gloves != src)
-        to_chat(H, SPAN_WARNING("Восстановление прервано: браслеты больше не на вас."))
+        to_chat(H, SPAN_WARNING("Healing interrupted: the bracelets are no longer on you."))
         return
 
-    to_chat(H, SPAN_NOTICE("Энергия браслетов наполняет ваши руки. Кости встают на место."))
+    to_chat(H, SPAN_NOTICE("The energy of the bracelets fills your arms. The bones snap back into place."))
 
     var/list/arms = list(H.get_organ(BP_L_ARM), H.get_organ(BP_R_ARM))
     for(var/obj/item/organ/external/arm in arms)
