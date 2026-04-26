@@ -119,7 +119,7 @@
 /mob/living/scp173/say(message)
 	return // lol you can't talk
 
-/mob/living/scp173/emote(act, m_type, message)
+/mob/living/scp173/emote(act, intentional, m_type, message)
 	if(IsBeingWatched())
 		return
 	return ..()
