@@ -37,7 +37,7 @@
 
 /decl/communication_channel/scpooc/do_broadcast(message)
 	for (var/client/target in GLOB.clients)
-		if (check_rights(R_ADMIN|R_MOD, FALSE, target) || target in GLOB.SCP_list)
+		if((check_rights(R_ADMIN|R_MOD, FALSE, target)) || (target in GLOB.SCP_list))
 			receive_broadcast(target, SPAN_SCPOOC("<strong>SYSTEM BROADCAST:</strong> <span class='message linkify'>[message]</span>"))
 
 /client/proc/scpooc(msg as text)

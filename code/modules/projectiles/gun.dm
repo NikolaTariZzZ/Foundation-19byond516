@@ -634,7 +634,7 @@
 	if(user)
 		user.visible_message(SPAN_WARNING("[user] switches the safety of \the [src] [safety_state ? "on" : "off"]."), SPAN_NOTICE("You switch the safety of \the [src] [safety_state ? "on" : "off"]."), range = 3)
 		last_safety_check = world.time
-		playsound(src, 'sounds/weapons/flipblade.ogg', vol = 50, 1)
+		playsound(src, 'sounds/weapons/flipblade.ogg', 50, 1)
 
 /obj/item/gun/verb/toggle_safety_verb()
 	set src in usr
