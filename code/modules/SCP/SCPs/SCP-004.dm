@@ -8,9 +8,10 @@
     icon = 'icons/SCP/scp-004.dmi'
     icon_state = "floor"
 
+// ==================== SCP-004 DOOR ====================
 /obj/structure/scp004_door
-    name = "SCP-004-1"
-    desc = "A heavy wooden door bound with iron hinges. "
+    name = "Strange door"
+    desc = "A heavy wooden door bound with iron hinges."
     icon = 'icons/SCP/scp-004.dmi'
     icon_state = "door_closed"
     density = TRUE
@@ -30,10 +31,8 @@
 /obj/structure/scp004_door/Destroy()
     if(portal_timer)
         deltimer(portal_timer)
-    if(current_portal)
-        QDEL_NULL(current_portal)
-    if(linked_portal)
-        QDEL_NULL(linked_portal)
+    QDEL_NULL(current_portal)
+    QDEL_NULL(linked_portal)
     return ..()
 
 /obj/structure/scp004_door/attackby(obj/item/W, mob/user, params)
@@ -90,11 +89,9 @@
     portal_timer = addtimer(CALLBACK(src, PROC_REF(auto_close_portal)), 1 MINUTES, TIMER_STOPPABLE)
 
 /obj/structure/scp004_door/proc/auto_close_portal()
-    if(current_portal && !QDELETED(current_portal))
-        visible_message(SPAN_NOTICE("The passageway flickers and vanishes. The door closes."))
-        QDEL_NULL(current_portal)
-    if(linked_portal && !QDELETED(linked_portal))
-        QDEL_NULL(linked_portal)
+    visible_message(SPAN_NOTICE("The passageway flickers and vanishes. The door closes."))
+    QDEL_NULL(current_portal)
+    QDEL_NULL(linked_portal)
     portal_active = FALSE
     close_door()
     portal_timer = null
@@ -105,12 +102,14 @@
 
 /obj/structure/scp004_door/proc/close_door()
     icon_state = "door_closing"
-    spawn(1 SECONDS)
-        icon_state = "door_closed"
-        open = FALSE
-        density = TRUE
-        opacity = TRUE
-        update_icon()
+    addtimer(CALLBACK(src, PROC_REF(finish_close_door)), 1 SECONDS)
+
+/obj/structure/scp004_door/proc/finish_close_door()
+    icon_state = "door_closed"
+    open = FALSE
+    density = TRUE
+    opacity = TRUE
+    update_icon()
 
 /obj/structure/scp004_door/update_icon()
     icon_state = open ? "door_open" : "door_closed"
@@ -162,60 +161,84 @@
             . += "<span class='admin'>ADMIN: Key #[key_id] — GIB</span>"
 
 /obj/item/key/scp004/key_1
-    name = "rusted key I"
+    name = "Strange key I"
     key_id = 1
+    icon_state = "key_1"
 
 /obj/item/key/scp004/key_2
-    name = "rusted key II"
+    name = "Strange key II"
     key_id = 2
+    icon_state = "key_2"
 
 /obj/item/key/scp004/key_3
-    name = "rusted key III"
+    name = "Strange key III"
     key_id = 3
+    icon_state = "key_3"
 
 /obj/item/key/scp004/key_4
-    name = "rusted key IV"
+    name = "Strange key IV"
     key_id = 4
+    icon_state = "key_4"
+    key_effect = SCP004_EFFECT_PORTAL
+    portal_x = 32
+    portal_y = 22
+    portal_z = 2
 
 /obj/item/key/scp004/key_5
-    name = "rusted key V"
+    name = "Strange key V"
     key_id = 5
+    icon_state = "key_5"
 
 /obj/item/key/scp004/key_6
-    name = "rusted key VI"
+    name = "Strange key VI"
     key_id = 6
+    icon_state = "key_6"
     key_effect = SCP004_EFFECT_PORTAL
-    portal_x = 219
-    portal_y = 105
+    portal_x = 221
+    portal_y = 108
     portal_z = 2
 
 /obj/item/key/scp004/key_7
-    name = "rusted key VII"
+    name = "Strange key VII"
     key_id = 7
+    icon_state = "key_7"
 
 /obj/item/key/scp004/key_8
-    name = "rusted key VIII"
+    name = "Strange key VIII"
     key_id = 8
+    icon_state = "key_8"
+    key_effect = SCP004_EFFECT_PORTAL
+    portal_x = 161
+    portal_y = 181
+    portal_z = 5
 
 /obj/item/key/scp004/key_9
-    name = "rusted key IX"
+    name = "Strange key IX"
     key_id = 9
+    icon_state = "key_9"
 
 /obj/item/key/scp004/key_10
-    name = "rusted key X"
+    name = "Strange key X"
     key_id = 10
+    icon_state = "key_10"
+    key_effect = SCP004_EFFECT_PORTAL
+    portal_x = 190
+    portal_y = 181
+    portal_z = 8
 
 /obj/item/key/scp004/key_11
-    name = "rusted key XI"
+    name = "Strange key XI"
     key_id = 11
+    icon_state = "key_11"
 
 /obj/item/key/scp004/key_12
-    name = "rusted key XII"
+    name = "Strange key XII"
     key_id = 12
+    icon_state = "key_12"
     key_effect = SCP004_EFFECT_PORTAL
-    portal_x = 40
-    portal_y = 154
-    portal_z = 5
+    portal_x = 60
+    portal_y = 168
+    portal_z = 8
 
 // ==================== SCP-004 PORTAL ====================
 /obj/effect/portal/scp004
