@@ -16,4 +16,3 @@ nikolatarizzz - TrialAdmin
 johnevans - TrialAdmin
 rinoglaz - Developer
 Ilmir037 - Host
-Merder12 - Host
