@@ -3,14 +3,14 @@
 
 // ==================== SCP-004 FLOOR ====================
 /turf/simulated/floor/scp004
-    name = "SCP-004 dimension floor"
+    name = "dimension floor"
     desc = "A cold, dark stone floor that seems to absorb light. The surface feels unnaturally smooth."
     icon = 'icons/SCP/scp-004.dmi'
     icon_state = "floor"
 
 /obj/structure/scp004_door
-    name = "SCP-004-1"
-    desc = "A heavy wooden door bound with iron hinges. "
+    name = "heavy wooden door"
+    desc = "A heavy wooden door bound with iron hinges."
     icon = 'icons/SCP/scp-004.dmi'
     icon_state = "door_closed"
     density = TRUE
@@ -26,6 +26,13 @@
 /obj/structure/scp004_door/Initialize(mapload)
     . = ..()
     update_icon()
+
+    SCP = new /datum/scp(
+        src, // Ref to actual SCP atom
+        "heavy wooden door", //Name (Should not be the scp desg, more like what it can be described as to viewers)
+        SCP_EUCLID, //Obj Class
+        "004", //Numerical Designation
+    )
 
 /obj/structure/scp004_door/Destroy()
     if(portal_timer)
