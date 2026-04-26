@@ -11,6 +11,7 @@
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__byond_version_compat.dm"
+#include "code\modules\emotes\generic\mtf_commands.dm"
 #include "code\_compile_options.dm"
 #include "code\_debugger.dm"
 #include "code\_macros.dm"
