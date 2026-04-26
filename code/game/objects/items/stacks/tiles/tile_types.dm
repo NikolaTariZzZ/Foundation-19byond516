@@ -23,6 +23,8 @@
 	item_flags = 0
 	obj_flags = 0
 
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
 /*
  * Grass
  */
@@ -32,6 +34,9 @@
 	desc = "A patch of grass like they often use on golf courses."
 	icon_state = "tile_grass"
 	origin_tech = list(TECH_BIO = 1)
+
+	drop_sound = SFX_DROP_HERB
+	pickup_sound = SFX_PICKUP_HERB
 
 /*
  * Wood
@@ -43,6 +48,9 @@
 	icon_state = "tile-wood"
 	color = WOOD_COLOR_GENERIC
 	matter = list(MATERIAL_WOOD = 450)
+
+	drop_sound = SFX_DROP_WOODEN
+	pickup_sound = SFX_PICKUP_WOODEN
 
 /obj/item/stack/tile/wood/cyborg
 	name = "wood floor tile synthesizer"
