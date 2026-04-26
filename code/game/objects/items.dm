@@ -1,5 +1,3 @@
-#include "../../__defines/sound.dm"
-
 /obj/item
 	name = "item"
 	icon = 'icons/obj/items.dmi'
