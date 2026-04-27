@@ -103,8 +103,8 @@
 /obj/item/gun/projectile/automatic/scp/ak742
 	name = "AK-19"
 	desc = "A 7.62x39mm modernized variant of the original AK-47, exported from Russia. This one has a front grip and updated internals to fire quite a bit faster than it's brother."
-	icon_state = "ak74"
-	item_state = "ak74"
+	icon_state = "ak742"
+	item_state = "ak742"
 	w_class = ITEM_SIZE_HUGE
 	force = 10
 	slot_flags = SLOT_BACK
