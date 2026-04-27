@@ -13,7 +13,7 @@ var/global/send_emergency_team = 0
 		Think through your actions and make the roleplay immersive! <b>Please remember all \
 		rules aside from those without explicit exceptions apply to the MTF.</b>"
 	leader_welcome_text = "You shouldn't see this"
-	landmark_id = "Response Team"      // <-- место спавна
+	landmark_id = "Response Team"
 	id_type = /obj/item/card/id/mtf
 
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
@@ -75,7 +75,23 @@ var/global/send_emergency_team = 0
 		if(E)
 			player.set_emote(E.key, E)
 
+	// Регистрируем сигнал речи для звука рации
+	RegisterSignal(player, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(play_mtf_radio_beep))
+
 	return 1
+
+/datum/antagonist/mtf/proc/play_mtf_radio_beep(mob/living/speaker, list/message_args)
+	// Проверяем, что на персонаже надета гарнитура ERT (в левом или правом ухе)
+	var/mob/living/carbon/human/H = speaker
+	if(!istype(H))
+		return
+	if(istype(H.l_ear, /obj/item/device/radio/headset/ert) || istype(H.r_ear, /obj/item/device/radio/headset/ert))
+		playsound(speaker, 'sounds/effects/BeepMTF.ogg', 25, 0, falloff = 3, frequency = rand(80, 120) / 100)
+
+/datum/antagonist/mtf/remove_antagonist(datum/mind/player, show_message, implanted)
+	. = ..()
+	if(. && player.current)
+		UnregisterSignal(player.current, COMSIG_LIVING_TREAT_MESSAGE)
 
 // ------------------------------------------------------------------
 // Конкретные отряды
@@ -93,7 +109,7 @@ GLOBAL_DATUM_INIT(mtf_nu_7, /datum/antagonist/mtf/nu_7, new)
 /datum/antagonist/mtf/nu_7
 	role_text = "MTF Nu-7 Operative"
 	role_text_plural = "MTF Nu-7 Operatives"
-	welcome_text = "You are a Hammer Down operative. Use overwhelming force to contain the threat."
+	welcome_text = "You are a Hammer Down operative. Lightning and thunder!"
 	agent_outfit = /decl/hierarchy/outfit/mtf/nu_7
 
 GLOBAL_DATUM_INIT(mtf_beta_7, /datum/antagonist/mtf/beta_7, new)
