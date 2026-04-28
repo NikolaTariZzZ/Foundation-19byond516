@@ -105,6 +105,60 @@ GLOBAL_DATUM_INIT(mtf_epsilon_11, /datum/antagonist/mtf/epsilon_11, new)
 	agent_outfit = /decl/hierarchy/outfit/mtf/epsilon_11/agent
 	leader_outfit = /decl/hierarchy/outfit/mtf/epsilon_11/leader
 
+	/// Доступные классы для обычных агентов (не лидера)
+	var/list/class_outfits = list(
+		"Agent"    = /decl/hierarchy/outfit/mtf/epsilon_11/agent,
+		"Breacher" = /decl/hierarchy/outfit/mtf/epsilon_11/breacher,
+		"Medic"    = /decl/hierarchy/outfit/mtf/epsilon_11/medic,
+		"Pointman" = /decl/hierarchy/outfit/mtf/epsilon_11/pointman
+	)
+
+/datum/antagonist/mtf/epsilon_11/equip(mob/living/carbon/human/player)
+	player.add_language(LANGUAGE_ENGLISH)
+
+	var/outfit_to_use
+	if(leader && player.mind == leader && leader_outfit)
+		// Лидер – сразу выдаём его уникальный аутфит
+		outfit_to_use = leader_outfit
+	else
+		// Предлагаем обычному агенту выбрать класс
+		var/chosen_class = input(player, "Choose your specialization:", "MTF Class Selection") as null|anything in class_outfits
+		if(chosen_class)
+			outfit_to_use = class_outfits[chosen_class]
+		else
+			// Если игрок закрыл окно или не выбрал – даём стандартного агента
+			outfit_to_use = agent_outfit
+
+	// Применяем выбранный или запасной аутфит
+	if(outfit_to_use)
+		dressup_human(player, outfits_decls_by_type_[outfit_to_use], TRUE)
+	else
+		dressup_human(player, outfits_decls_by_type_[/decl/hierarchy/outfit/mtf/epsilon_11/agent], TRUE)
+
+	// Тактические голосовые команды (общие для всех МОГ)
+	add_verb(player, /mob/proc/mtf_classd_spotted_emote)
+	add_verb(player, /mob/proc/mtf_you_stop_emote)
+	add_verb(player, /mob/proc/mtf_come_out_bastard_emote)
+	add_verb(player, /mob/proc/mtf_target_terminated_emote)
+	add_verb(player, /mob/proc/mtf_classd_terminated_emote)
+	add_verb(player, /mob/proc/mtf_statue_spotted_emote)
+	add_verb(player, /mob/proc/mtf_plague_doctor_spotted_emote)
+	add_verb(player, /mob/proc/mtf_hey_halt_emote)
+	add_verb(player, /mob/proc/mtf_come_out_die_emote)
+
+	// Регистрируем эмоуты в системе для использования через *
+	for(var/emote_type in typesof(/datum/emote/mtf))
+		if(emote_type == /datum/emote/mtf)
+			continue
+		var/datum/emote/E = GLOB.all_emotes[emote_type]
+		if(E)
+			player.set_emote(E.key, E)
+
+	// Звук рации при разговоре
+	RegisterSignal(player, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(play_mtf_radio_beep))
+
+	return 1
+
 GLOBAL_DATUM_INIT(mtf_nu_7, /datum/antagonist/mtf/nu_7, new)
 /datum/antagonist/mtf/nu_7
 	role_text = "MTF Nu-7 Operative"
