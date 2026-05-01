@@ -270,7 +270,8 @@
 	access = list(
 		ACCESS_COM_COMMS,
 		ACCESS_ADMIN_LVL1,
-		ACCESS_CHAPEL_OFFICE
+		ACCESS_CHAPEL_OFFICE,
+		ACCESS_SECURITY_LEVEL2
 	)
 
 	minimal_access = list()
