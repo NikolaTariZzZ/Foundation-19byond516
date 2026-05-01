@@ -182,8 +182,8 @@
 	key_id = 2
 	icon_state = "key_2"
 	key_effect = SCP004_EFFECT_PORTAL
-	portal_x = 190
-	portal_y = 181
+	portal_x = 97
+	portal_y = 229
 	portal_z = 8
 
 /obj/item/key/scp004/key_3
@@ -248,8 +248,8 @@
 	key_id = 12
 	icon_state = "key_12"
 	key_effect = SCP004_EFFECT_PORTAL
-	portal_x = 60
-	portal_y = 168
+	portal_x = 39
+	portal_y = 189
 	portal_z = 8
 
 // ==================== SCP-004 PORTAL ====================
