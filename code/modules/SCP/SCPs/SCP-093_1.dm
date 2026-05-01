@@ -37,14 +37,28 @@
     ai_holder_type = /datum/ai_holder/simple_animal/melee/scp093
     say_list_type = /datum/say_list/scp093
 
+    // Регенерация — только когда рядом враги (реже срабатывает)
     var/heal_rate = 50
     var/heal_timer
+    var/regen_interval = 15 SECONDS  // Увеличен интервал
+    var/last_combat_time = 0
+
+    // Бой
     var/attack_cooldown_time = 4 SECONDS
     var/attack_cooldown
 
+    // Двери
+    var/door_break_cooldown = 3 SECONDS  // Увеличен кулдаун
+
+    // Звуки
+    var/step_sound = 'sounds/scp/093/093_step.ogg'
+    var/scp093_attack_sound = 'sounds/scp/093/093_attack.ogg'
+    var/door_sound = 'sounds/effects/bang.ogg'
+
 /mob/living/simple_animal/hostile/scp093/Initialize()
     . = ..()
-    heal_timer = addtimer(CALLBACK(src, PROC_REF(regen)), 10 SECONDS, TIMER_STOPPABLE)
+    // Регенерация запускается только при необходимости
+    heal_timer = addtimer(CALLBACK(src, PROC_REF(regen)), regen_interval, TIMER_STOPPABLE | TIMER_LOOP)
 
 /mob/living/simple_animal/hostile/scp093/Destroy()
     if(heal_timer)
@@ -52,31 +66,19 @@
     return ..()
 
 /mob/living/simple_animal/hostile/scp093/proc/regen()
-    if(stat != DEAD)
+    if(stat == DEAD)
+        return
+    // Регенерирует только если был в бою за последние 5 минут
+    if(world.time - last_combat_time < 5 MINUTES && health < maxHealth)
         health = min(health + heal_rate, maxHealth)
-        heal_timer = addtimer(CALLBACK(src, PROC_REF(regen)), 10 SECONDS, TIMER_STOPPABLE)
 
-/mob/living/simple_animal/hostile/scp093/death(gibbed, deathmessage, show_dead_message)
-    ..()
-    icon_state = icon_dead
-    visible_message(SPAN_DANGER("[src] lets out a horrible screech and explodes into a shower of black viscera and blood!"))
-    playsound(src, 'sounds/effects/splat.ogg', 100, 1)
-    new /obj/effect/gibspawner/generic(get_turf(src))
-    new /obj/effect/gibspawner/human(get_turf(src))
-    var/obj/effect/decal/cleanable/blood/gibs/G = new /obj/effect/decal/cleanable/blood/gibs(get_turf(src))
-    G.basecolor = "#000000"
-    G.update_icon()
-
+// ==================== ШАГИ (звук тише) ====================
 /mob/living/simple_animal/hostile/scp093/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0)
     . = ..()
-    if(. && stat == CONSCIOUS)
-        if(prob(10))
-            var/turf/T = get_turf(src)
-            if(T)
-                var/obj/effect/decal/cleanable/blood/B = new /obj/effect/decal/cleanable/blood(T)
-                B.basecolor = "#000000"
-                B.update_icon()
+    if(. && stat == CONSCIOUS && isturf(loc) && prob(25))  // Звук шагов только с 25% шансом
+        playsound(loc, step_sound, 20, 1)  // Тише (20 вместо 30)
 
+// ==================== БОЙ ====================
 /mob/living/simple_animal/hostile/scp093/do_attack(atom/A, turf/T)
     if(..())
         UnarmedAttack(A)
@@ -92,12 +94,13 @@
         if(L.stat == DEAD)
             return
         if(attack_cooldown > world.time)
-            to_chat(src, SPAN_WARNING("You can't attack yet."))
             return
         var/damage_amount = rand(60, 100)
         L.apply_damage(damage_amount, BRUTE)
         visible_message(SPAN_DANGER("[src] slashes [L] with tremendous force!"))
+        playsound(get_turf(src), scp093_attack_sound, 50, 1)
         attack_cooldown = world.time + attack_cooldown_time
+        last_combat_time = world.time  // Запоминаем время боя
         if(prob(20) && ishuman(L))
             var/mob/living/carbon/human/H = L
             var/limb_name = pick(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG)
@@ -106,24 +109,70 @@
                 limb.fracture()
                 visible_message(SPAN_DANGER("[src] crushes [H]'s [limb.name] with tremendous force!"))
         return
-    if(isobj(A) || isturf(A))
-        visible_message(SPAN_DANGER("[src] smashes through [A]!"))
-        playsound(get_turf(A), 'sounds/effects/grillehit.ogg', 50, 1)
-        if(istype(A, /turf/simulated/wall))
-            var/turf/simulated/wall/W = A
-            W.dismantle_wall()
-            return
-        if(istype(A, /obj/machinery/door))
-            var/obj/machinery/door/D = A
-            if(istype(D, /obj/machinery/door/blast))
-                D:force_open()
-            else
-                D.set_broken(TRUE)
-                D.open(TRUE)
-            return
-        qdel(A)
+
+    // Только взлом дверей
+    if(istype(A, /obj/machinery/door))
+        DestroyDoor(A)
         return
-    return ..()
+
+// ==================== ВЗЛОМ ДВЕРЕЙ ====================
+/mob/living/simple_animal/hostile/scp093/proc/DestroyDoor(obj/machinery/door/A)
+    if((world.time - door_break_cooldown) < door_break_cooldown)
+        return
+    if(!istype(A) || !A.density || !A.Adjacent(src))
+        return
+
+    var/open_time = 3 SECONDS
+    if(istype(A, /obj/machinery/door/blast))
+        open_time = 5 SECONDS
+
+    if(istype(A, /obj/machinery/door/airlock))
+        var/obj/machinery/door/airlock/AR = A
+        if(AR.locked)
+            open_time += 2 SECONDS
+        if(AR.welded)
+            open_time += 3 SECONDS
+        if(AR.secured_wires)
+            open_time += 3 SECONDS
+
+    A.visible_message(SPAN_WARNING("[src] begins to pry open [A]..."))
+    playsound(get_turf(A), door_sound, 30, 1)
+
+    if(!do_after(src, open_time, A))
+        return
+
+    A.visible_message(SPAN_DANGER("[src] forcefully opens [A]!"))
+    if(istype(A, /obj/machinery/door/blast))
+        var/obj/machinery/door/blast/DB = A
+        DB.open(TRUE)
+        return
+
+    if(istype(A, /obj/machinery/door/airlock))
+        var/obj/machinery/door/airlock/AR = A
+        AR.unlock(TRUE)
+        AR.welded = FALSE
+    A.set_broken(TRUE)
+    A.open(TRUE)
+
+// ==================== СМЕРТЬ (ОПТИМИЗИРОВАНО — БЕЗ ГИБСПАВНЕРОВ) ====================
+/mob/living/simple_animal/hostile/scp093/death(gibbed, deathmessage, show_dead_message)
+    ..()
+    icon_state = icon_dead
+    visible_message(SPAN_DANGER("[src] lets out a horrible screech and explodes into a shower of black viscera and blood!"))
+    playsound(src, 'sounds/effects/splat.ogg', 100, 1)
+    // Только один декал вместо спавнеров
+    var/obj/effect/decal/cleanable/blood/gibs/G = new /obj/effect/decal/cleanable/blood/gibs(get_turf(src))
+    G.basecolor = "#000000"
+    G.update_icon()
+    // Удаляем декал через 5 минут
+    QDEL_IN(G, 5 MINUTES)
 
 /mob/living/simple_animal/hostile/scp093/CanPass(atom/movable/mover, turf/target)
     return TRUE
+
+/mob/living/simple_animal/hostile/scp093/Bump(atom/A)
+    . = ..()
+    if(istype(A, /obj/machinery/door))
+        DestroyDoor(A)
+    if(isliving(A) && canClick())
+        UnarmedAttack(A)
