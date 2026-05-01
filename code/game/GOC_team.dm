@@ -32,15 +32,18 @@
 		to_chat(usr, SPAN_DANGER("Looks like someone beat you to it!"))
 		return
 
+	// Спрашиваем, нужно ли оповещать станцию
+	var/announce = (alert("Do you want to announce the GOC dispatch to the station?", "Announce", "Yes", "No") == "Yes")
+
 	if(reason)
-		message_staff("[key_name_admin(usr)] is dispatching the GOC for the reason: [reason]", 1)
+		message_staff("[key_name_admin(usr)] is dispatching the GOC for the reason: [reason] ([announce ? "announced" : "silent"])", 1)
 	else
-		message_staff("[key_name_admin(usr)] is dispatching the GOC.", 1)
+		message_staff("[key_name_admin(usr)] is dispatching the GOC. ([announce ? "announced" : "silent"])", 1)
 
 	log_admin("[key_name(usr)] used Dispatch GOC.")
-	trigger_goc_response_team(reason)
+	trigger_goc_response_team(reason, announce)
 
-/proc/trigger_goc_response_team(reason = "")
+/proc/trigger_goc_response_team(reason = "", announce = TRUE)
 	if(send_emergency_team_goc)
 		return
 
@@ -50,11 +53,12 @@
 	if(!team.starting_locations || !team.starting_locations.len)
 		team.get_starting_locations()
 
-	command_announcement.Announce(
-		"A Global Occult Coalition strike team has been dispatched to [station_name()].",
-		"UNGOC High Command",
-		'sounds/scp/mtf_dispatch.ogg'   // замените на свой звук при желании
-	)
+	if(announce)
+		command_announcement.Announce(
+			"A Global Occult Coalition strike team has been dispatched to [station_name()].",
+			"UNGOC High Command",
+			'sounds/scp/broadcast.ogg'   // замените на свой звук при желании
+		)
 
 	team.reason = reason
 	active_goc = team
