@@ -249,8 +249,9 @@
 	name = "corporate security beret"
 	desc = "A white beret adorned with a corporate logo. For security guards that are more inclined towards style than safety."
 	icon_state = "corpsec_beret"
-
+	armor = list(melee = 35, bullet = 40, laser = 20,energy = 20, bomb = 15, bio = 15, rad = 15)
 /obj/item/clothing/head/beret/plaincolor
 	name = "beret"
 	desc = "A simple, solid color beret. This one has no emblems or insignia on it."
 	icon_state = "beret_white"
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 5, bomb = 5, bio = 15, rad = 15)
