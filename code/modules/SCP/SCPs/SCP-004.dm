@@ -3,14 +3,14 @@
 
 // ==================== SCP-004 FLOOR ====================
 /turf/simulated/floor/scp004
-	name = "SCP-004 dimension floor"
+	name = "dimension floor"
 	desc = "A cold, dark stone floor that seems to absorb light. The surface feels unnaturally smooth."
 	icon = 'icons/SCP/scp-004.dmi'
 	icon_state = "floor"
 
 // ==================== SCP-004 DOOR ====================
 /obj/structure/scp004_door
-	name = "Strange door"
+	name = "heavy wooden door"
 	desc = "A heavy wooden door bound with iron hinges."
 	icon = 'icons/SCP/scp-004.dmi'
 	icon_state = "door_closed"
@@ -173,12 +173,12 @@
 			. += "<span class='admin'>ADMIN: Key #[key_id] — GIB</span>"
 
 /obj/item/key/scp004/key_1
-	name = "Strange key I"
+	name = "rusted key I"
 	key_id = 1
 	icon_state = "key_1"
 
 /obj/item/key/scp004/key_2
-	name = "Strange key II"
+	name = "rusted key II"
 	key_id = 2
 	icon_state = "key_2"
 	key_effect = SCP004_EFFECT_PORTAL
@@ -187,12 +187,12 @@
 	portal_z = 8
 
 /obj/item/key/scp004/key_3
-	name = "Strange key III"
+	name = "rusted key III"
 	key_id = 3
 	icon_state = "key_3"
 
 /obj/item/key/scp004/key_4
-	name = "Strange key IV"
+	name = "rusted key IV"
 	key_id = 4
 	icon_state = "key_4"
 	key_effect = SCP004_EFFECT_PORTAL
@@ -201,12 +201,12 @@
 	portal_z = 5
 
 /obj/item/key/scp004/key_5
-	name = "Strange key V"
+	name = "rusted key V"
 	key_id = 5
 	icon_state = "key_5"
 
 /obj/item/key/scp004/key_6
-	name = "Strange key VI"
+	name = "rusted key VI"
 	key_id = 6
 	icon_state = "key_6"
 	key_effect = SCP004_EFFECT_PORTAL
@@ -215,12 +215,12 @@
 	portal_z = 2
 
 /obj/item/key/scp004/key_7
-	name = "Strange key VII"
+	name = "rusted key VII"
 	key_id = 7
 	icon_state = "key_7"
 
 /obj/item/key/scp004/key_8
-	name = "Strange key VIII"
+	name = "rusted key VIII"
 	key_id = 8
 	icon_state = "key_8"
 	key_effect = SCP004_EFFECT_PORTAL
@@ -229,12 +229,12 @@
 	portal_z = 5
 
 /obj/item/key/scp004/key_9
-	name = "Strange key IX"
+	name = "rusted key IX"
 	key_id = 9
 	icon_state = "key_9"
 
 /obj/item/key/scp004/key_10
-	name = "Strange key X"
+	name = "rusted key X"
 	key_id = 10
 	icon_state = "key_10"
 	key_effect = SCP004_EFFECT_PORTAL
@@ -243,12 +243,12 @@
 	portal_z = 8
 
 /obj/item/key/scp004/key_11
-	name = "Strange key XI"
+	name = "rusted key XI"
 	key_id = 11
 	icon_state = "key_11"
 
 /obj/item/key/scp004/key_12
-	name = "Strange key XII"
+	name = "rusted key XII"
 	key_id = 12
 	icon_state = "key_12"
 	key_effect = SCP004_EFFECT_PORTAL
@@ -258,7 +258,7 @@
 
 // ==================== SCP-004 PORTAL ====================
 /obj/effect/portal/scp004
-	name = "portal"
+	name = "strange portal"
 	desc = "A shimmering passageway."
 	icon = 'icons/SCP/scp-004.dmi'
 	icon_state = "portal"
