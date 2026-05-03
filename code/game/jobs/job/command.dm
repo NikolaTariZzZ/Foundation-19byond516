@@ -95,7 +95,7 @@
 // COMMUNICATIONS
 
 /datum/job/commsofficer
-	title = "Коммуникационный офицер"
+	title = "Офицер Коммуникации"
 	department = "Командование"
 	department_flag = COM|ENG|SEC
 	supervisors = "Командир Охраны и Директор Зоны"
@@ -259,8 +259,8 @@
 	ideal_character_age = 30
 	alt_titles = list(
 		"Посол Глобальной Оккультной Коалиции",
-		"Агент по связям с UIU" = /decl/hierarchy/outfit/job/civ/uiu,
-		"Корпоративный представитель MCD" = /decl/hierarchy/outfit/job/civ/MCDRep,
+		"Агент по связям с ОНП" = /decl/hierarchy/outfit/job/civ/uiu,
+		"Корпоративный представитель МКиД" = /decl/hierarchy/outfit/job/civ/MCDRep,
 		"Корпоративный представитель Goldbaker-Reinz" = /decl/hierarchy/outfit/job/civ/grcl
 	)
 	outfit_type = /decl/hierarchy/outfit/job/civ/gocrep
