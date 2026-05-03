@@ -269,7 +269,7 @@
 "pp" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/dark/monotile,/area/scp/dimension004)
 "pt" = (/obj/machinery/light{dir = 4; icon_state = "tube_map"},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/obj/machinery/portable_atmospherics/powered/scrubber,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/monotile,/area/scp/dimension004/scp610)
 "pz" = (/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/lino,/area/scp/dimension004/scp610)
-"pA" = ()
+"pA" = (/obj/machinery/computer/arcade/orion_trail,/turf/simulated/floor/lino,/area/space)
 "pI" = (/obj/structure/table/rack,/obj/effect/floor_decal/industrial/outline/grey,/obj/item/grenade/flashbang,/turf/simulated/floor/tiled/dark/monotile,/area/scp/dimension004/scp610)
 "pM" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/monotile,/area/scp/dimension004/scp610)
 "pO" = (/obj/machinery/door/airlock/civilian,/turf/simulated/floor/tiled/steel_grid,/area/scp/dimension004)
