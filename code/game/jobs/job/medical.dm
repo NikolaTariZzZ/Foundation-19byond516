@@ -285,7 +285,7 @@
 	title = "Хирург"
 
 /datum/job/emt
-	title = "Техник Скорой Медицинской Помощи"
+	title = "Парамедик"
 	department = "Медицинский отдел"
 	department_flag = MED
 	selection_color = "#013d3b"
@@ -298,6 +298,7 @@
 	outfit_type = /decl/hierarchy/outfit/job/medical/emt
 	class = CLASS_C
 	hud_icon = "hudemt"
+	alt_titles = list("Фельдшер") // Это моя отсебятина, ну а с другой стороны чебы нет?
 
 	access = list(
 		ACCESS_MED_COMMS,
