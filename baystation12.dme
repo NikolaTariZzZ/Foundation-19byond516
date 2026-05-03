@@ -670,6 +670,7 @@
 #include "code\game\antagonist\station\traitor.dm"
 #include "code\game\antagonist\station\d-class\informant.dm"
 #include "code\game\antagonist\station\d-class\trader.dm"
+#include "code\game\objects\items\devices\Calculator.dm"
 #include "code\game\area\area_access.dm"
 #include "code\game\area\area_power.dm"
 #include "code\game\area\areas.dm"

@@ -29,6 +29,11 @@ var/global/send_emergency_team = 0
 	var/agent_outfit = null
 	var/leader_outfit = null
 
+	/// Текст объявления о вызове
+	var/ert_announce_text = "It would appear that a Mobile Task Force was requested for %STATION%. We will prepare and send one as soon as possible."
+	/// Звук объявления о вызове
+	var/ert_announce_sound = 'sounds/scp/mtf_dispatch.ogg'
+
 /datum/antagonist/mtf/create_default(mob/source)
 	var/mob/living/carbon/human/M = ..()
 	if(istype(M)) M.age = rand(25,45)
@@ -165,6 +170,8 @@ GLOBAL_DATUM_INIT(mtf_nu_7, /datum/antagonist/mtf/nu_7, new)
 	role_text_plural = "MTF Nu-7 Operatives"
 	welcome_text = "You are a Hammer Down operative. Lightning and thunder!"
 	agent_outfit = /decl/hierarchy/outfit/mtf/nu_7
+	ert_announce_text = "Attention. Militarized Mobile Task Force Nu-7, “Hammer Down”, is responding. A full battalion-strength force has been mobilized. All non-security personnel are to evacuate to designated shelters or follow security escort. Do not engage hostile forces. Nu-7 has command authority over the site."
+	ert_announce_sound = 'sounds/MTF_Alert/NU-7_MTF.ogg'
 
 GLOBAL_DATUM_INIT(mtf_beta_7, /datum/antagonist/mtf/beta_7, new)
 /datum/antagonist/mtf/beta_7
@@ -172,6 +179,8 @@ GLOBAL_DATUM_INIT(mtf_beta_7, /datum/antagonist/mtf/beta_7, new)
 	role_text_plural = "MTF Beta-7 Operatives"
 	welcome_text = "You are a Maz Hatter specialist. Handle chemical and biological hazards."
 	agent_outfit = /decl/hierarchy/outfit/mtf/beta_7
+	ert_announce_text = "Attention. Mobile Task Force Beta-7, “Maz Hatters”, has been deployed. This unit specializes in biological, chemical, and radiological hazards. All personnel must avoid contact with any contamination sources and await quarantine and decontamination protocols. Follow Beta-7 instructions immediately."
+	ert_announce_sound = 'sounds/MTF_Alert/Beta_MTF.ogg'
 
 GLOBAL_DATUM_INIT(mtf_eta_10, /datum/antagonist/mtf/eta_10, new)
 /datum/antagonist/mtf/eta_10
@@ -179,6 +188,8 @@ GLOBAL_DATUM_INIT(mtf_eta_10, /datum/antagonist/mtf/eta_10, new)
 	role_text_plural = "MTF Eta-10 Operatives"
 	welcome_text = "You are a See No Evil operative. Memetic and visual hazards are your specialty."
 	agent_outfit = /decl/hierarchy/outfit/mtf/eta_10
+	ert_announce_text = "Attention. Mobile Task Force Eta-10, “See No Evil”, has been called in. This unit deals with visual cognitohazards and memetic threats. Personnel are reminded to avoid direct visual contact with unknown subjects. Cover your eyes if instructed. Follow Eta-10 operatives’ guidance without hesitation."
+	ert_announce_sound = 'sounds/MTF_Alert/Eta-10_MTF.ogg'
 
 GLOBAL_DATUM_INIT(mtf_alpha_1, /datum/antagonist/mtf/alpha_1, new)
 /datum/antagonist/mtf/alpha_1
@@ -186,6 +197,8 @@ GLOBAL_DATUM_INIT(mtf_alpha_1, /datum/antagonist/mtf/alpha_1, new)
 	role_text_plural = "MTF Alpha-1 Operatives"
 	welcome_text = "You are the Red Right Hand. Only the O5 Council can command you."
 	agent_outfit = /decl/hierarchy/outfit/mtf/alpha_1
+	ert_announce_text = "Attention. Code Black Oversight. Mobile Task Force Alpha-1 has been activated. All personnel are to stand down and await direct orders from Alpha-1 operatives. Do not obstruct, question, or approach them. Further instructions will follow on a need-to-know basis."
+	ert_announce_sound = 'sounds/MTF_Alert/Alpha-1_MTF.ogg'
 
 GLOBAL_DATUM_INIT(mtf_omega_1, /datum/antagonist/mtf/omega_1, new)
 /datum/antagonist/mtf/omega_1
@@ -193,6 +206,8 @@ GLOBAL_DATUM_INIT(mtf_omega_1, /datum/antagonist/mtf/omega_1, new)
 	role_text_plural = "MTF Omega-1 Enforcements"
 	welcome_text = "You are the Law's Left Hand. Enforce internal directives and discipline."
 	agent_outfit = /decl/hierarchy/outfit/mtf/omega1
+	ert_announce_text = "Attention. Mobile Task Force Omega-1, “Law’s Left Hand”, is present. By order of the Ethics Committee, Omega-1 operatives hold full authority to detain or relieve any personnel found in breach of ethical conduct. Cooperate fully. This is not a drill."
+	ert_announce_sound = 'sounds/MTF_Alert/Omega_MTF.ogg'
 
 GLOBAL_DATUM_INIT(mtf_epsilon_9, /datum/antagonist/mtf/epsilon_9, new)
 /datum/antagonist/mtf/epsilon_9
@@ -200,6 +215,8 @@ GLOBAL_DATUM_INIT(mtf_epsilon_9, /datum/antagonist/mtf/epsilon_9, new)
 	role_text_plural = "MTF Epsilon-9 Operatives"
 	welcome_text = "You are a Fire Eater. Incendiary tactics and heavy firepower are your tools."
 	agent_outfit = /decl/hierarchy/outfit/mtf/epsilon_9
+	ert_announce_text = "Attention. Mobile Task Force Epsilon-9, “Fire Eaters”, is now operating on site. Specialized incendiary response is underway. Personnel in affected areas must evacuate immediately unless ordered otherwise. Stay clear of designated fire zones."
+	ert_announce_sound = 'sounds/MTF_Alert/Epsilon-9_MTF.ogg'
 
 GLOBAL_DATUM_INIT(mtf_isd, /datum/antagonist/mtf/isd, new)
 /datum/antagonist/mtf/isd
