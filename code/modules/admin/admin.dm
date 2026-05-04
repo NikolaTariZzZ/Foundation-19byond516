@@ -743,9 +743,11 @@ var/global/floorIsLava = 0
 	if (!SSticker.round_progressing)
 		to_world("<b>The game start has been delayed.</b>")
 		log_admin("[key_name(usr)] delayed the game.")
+		playsound(world, 'sounds/misc/notice1.ogg')
 	else
 		to_world("<b>The game will start soon.</b>")
 		log_admin("[key_name(usr)] removed the delay.")
+		playsound(world, 'sounds/misc/notice2.ogg')
 	SSstatistics.add_field_details("admin_verb","DELAY") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/adjump()

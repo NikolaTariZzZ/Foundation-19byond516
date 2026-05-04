@@ -97,5 +97,5 @@
 				continue
 			seen_turfs += T
 
-			show_sound_effect(get_turf(src), usr, SFX_ICON_SMALL)
+			show_sound_effect(get_turf(src), L, SFX_ICON_SMALL)
 
