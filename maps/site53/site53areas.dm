@@ -1414,8 +1414,15 @@
 	icon_state = "research"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	requires_power = 1
+
 /area/scp/dimension004/scp610
     name = "SCP-004 Dimension - SCP-610 Ruin"
+    has_gravity = 1
+    luminosity = 0
+    dynamic_lighting = 0
+
+/area/scp/dimension004/scp860
+    name = "SCP-860_1 Dimension"
     has_gravity = 1
     luminosity = 0
     dynamic_lighting = 0

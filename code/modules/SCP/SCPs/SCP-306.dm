@@ -29,6 +29,9 @@
 	var/mob/living/carbon/human/H = affected_mob
 	if(!istype(H))
 		return
+	// Don't affect SCPs
+	if(H.SCP)
+		return
 
 	switch(stage)
 		if(1)
@@ -99,6 +102,9 @@
 	set hidden = TRUE
 	for(var/datum/disease/scp306/D in diseases)
 		return FALSE
+	// Don't infect SCPs
+	if(SCP)
+		return FALSE
 	var/datum/disease/scp306/D = new()
 	D.Infect(src, FALSE)
 	visible_message(SPAN_DANGER("[src] is exposed to a strange viral agent!"))
@@ -168,6 +174,9 @@
 /mob/living/simple_animal/scp306_frog/UnarmedAttack(atom/A)
 	if(ishuman(A))
 		var/mob/living/carbon/human/H = A
+		// Don't infect SCPs
+		if(H.SCP)
+			return
 		switch(a_intent)
 			if(I_HELP)
 				H.visible_message(SPAN_NOTICE("[src] hugs [H] with its sticky body!"), SPAN_NOTICE("[src] gives you a friendly hug!"))
