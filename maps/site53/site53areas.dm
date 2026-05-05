@@ -123,7 +123,7 @@
 	name = "Chaos Insurgency Helicopter"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/centcom/chaos
@@ -137,14 +137,14 @@
 	name = "Global Occult Coalition Truck"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/site53/tram/goc2
 	name = "Global Occult Coalition Helicopter"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/centcom/goc
@@ -158,7 +158,7 @@
 	name = "Car"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 
@@ -166,7 +166,7 @@
 	name = "Mobile Task Force Helicopter"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/site53/tram/maintrain
