@@ -154,6 +154,20 @@
 	dynamic_lighting = 1
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
+/area/centcom/uiu
+	name = "Unusual Incidents Unit Headquarters"
+	icon_state = "Sleep"
+	requires_power = 0
+	dynamic_lighting = 1
+	area_flags = AREA_FLAG_RAD_SHIELDED
+
+/area/centcom/uiuroof
+	name = "Unusual Incidents Unit Headquarters"
+	icon_state = "Sleep"
+	requires_power = 0
+	dynamic_lighting = 0
+	area_flags = AREA_FLAG_RAD_SHIELDED
+
 /area/site53/tram/scpcar
 	name = "Car"
 	icon_state = "Sleep"
@@ -1333,6 +1347,11 @@
 	requires_power = 0
 	dynamic_lighting = 0
 
+/area/site53/lhcz/scp966chamber
+	name = "\improper SCP-966 Containment Chamber"
+	icon_state = "research"
+	area_flags = AREA_FLAG_RAD_SHIELDED
+
 /area/site53/lhcz/scp1102room
 	name = "\improper SCP-1102-RU Containment Chamber"
 	icon_state = "research"
@@ -1422,7 +1441,5 @@
     dynamic_lighting = 0
 
 /area/scp/dimension004/scp860
-    name = "SCP-860_1 Dimension"
-    has_gravity = 1
-    luminosity = 0
-    dynamic_lighting = 0
+	name = "SCP-860 Dimension - Dark Forest"
+	has_gravity = 1
