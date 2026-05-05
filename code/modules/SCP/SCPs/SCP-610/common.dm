@@ -207,6 +207,19 @@
 /obj/structure/corruption/maw/Initialize(mapload)
 	. = ..()
 	playsound(get_turf(src), 'sounds/scp/610/610_flesh_4.ogg', 40, TRUE)
+	START_PROCESSING(SSobj, src)
+
+/obj/structure/corruption/maw/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/structure/corruption/maw/Process()
+	var/turf/T = get_turf(src)
+	if(!T)
+		return
+	if(!(locate(/obj/structure/corruption/weeds) in T) && !(locate(/obj/structure/corruption/nest) in T))
+		visible_message(SPAN_WARNING("[src] withers away without corruption to sustain it!"))
+		qdel(src)
 
 /obj/structure/corruption/maw/Crossed(var/atom/movable/AM)
 	if(ishuman(AM))
@@ -216,6 +229,8 @@
 		if(is_scp610_mob(H))
 			return
 		if(H.species?.name == "Scarred Creature")
+			return
+		if(H.SCP)
 			return
 		H.visible_message(
 			SPAN_DANGER("[H] is caught by the maw!"),
@@ -315,6 +330,9 @@
 	var/mob/living/carbon/human/H = affected_mob
 	if(!istype(H))
 		return
+	// Don't affect SCPs
+	if(H.SCP)
+		return
 
 	switch(stage)
 		if(1)
@@ -371,6 +389,9 @@
 	set name = "Infect SCP-610"
 	set hidden = TRUE
 	for(var/datum/disease/scp610/D in diseases)
+		return FALSE
+	// Don't infect SCPs
+	if(SCP)
 		return FALSE
 	var/datum/disease/scp610/D = new()
 	D.Infect(src, FALSE)

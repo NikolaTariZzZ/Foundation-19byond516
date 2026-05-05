@@ -39,6 +39,9 @@
 	default_pixel_y = 0
 	attack_sound = 'sounds/scp/610/610_flesh_3.ogg'
 
+	see_invisible = SEE_INVISIBLE_NOLIGHTING
+	see_in_dark = 7
+
 /mob/living/simple_animal/hostile/scp610_base/Initialize(mapload)
 	. = ..()
 	pixel_x = default_pixel_x
@@ -73,7 +76,7 @@
 	var/turf/T = get_turf(src)
 	playsound(T, 'sounds/scp/610/610_flesh_2.ogg', 60, TRUE)
 	for(var/mob/living/carbon/human/H in range(death_infect_range, T))
-		if(!is_scp610_mob(H))
+		if(!is_scp610_mob(H) && !H.SCP)
 			H.infect_scp610()
 
 	var/obj/structure/corruption/nest/N = new(T)
@@ -145,6 +148,15 @@
 	natural_weapon = /obj/item/natural_weapon/scp610_slasher_blades
 	natural_armor = list(melee = ARMOR_MELEE_RESISTANT, bullet = ARMOR_BALLISTIC_PISTOL)
 
+/mob/living/simple_animal/hostile/scp610_slasher/Initialize(mapload)
+	. = ..()
+	SCP = new /datum/scp(
+		src,
+		"slasher",
+		SCP_EUCLID,
+		"610-Slasher"
+	)
+
 /mob/living/simple_animal/hostile/scp610_slasher/Life()
 	. = ..()
 	scp610_do_life(30, 8 SECONDS, 20)
@@ -209,6 +221,15 @@
 	var/leap_cooldown_track = 0
 	var/gallop_cooldown_track = 0
 	var/aiming_mode = FALSE
+
+/mob/living/simple_animal/hostile/scp610_leaper/Initialize(mapload)
+	. = ..()
+	SCP = new /datum/scp(
+		src,
+		"leaper",
+		SCP_EUCLID,
+		"610-Leaper"
+	)
 
 /mob/living/simple_animal/hostile/scp610_leaper/Life()
 	. = ..()
@@ -352,6 +373,15 @@
 	var/toggle_cooldown_track = 0
 	var/aiming_mode = FALSE
 
+/mob/living/simple_animal/hostile/scp610_lurker/Initialize(mapload)
+	. = ..()
+	SCP = new /datum/scp(
+		src,
+		"lurker",
+		SCP_EUCLID,
+		"610-Lurker"
+	)
+
 /mob/living/simple_animal/hostile/scp610_lurker/Life()
 	. = ..()
 	scp610_do_life(25, 10 SECONDS, 15)
@@ -493,6 +523,15 @@
 	var/snapshot_cooldown = 3 SECONDS
 	var/snapshot_cooldown_track = 0
 	var/aiming_mode = FALSE
+
+/mob/living/simple_animal/hostile/scp610_puker/Initialize(mapload)
+	. = ..()
+	SCP = new /datum/scp(
+		src,
+		"puker",
+		SCP_EUCLID,
+		"610-Puker"
+	)
 
 /mob/living/simple_animal/hostile/scp610_puker/Life()
 	. = ..()
