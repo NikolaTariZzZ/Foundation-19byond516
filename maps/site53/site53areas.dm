@@ -151,18 +151,18 @@
 	name = "Global Occult Coalition Headquarters"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/centcom/uiu
 	name = "Unusual Incidents Unit Headquarters"
 	icon_state = "Sleep"
 	requires_power = 0
-	dynamic_lighting = 1
+	dynamic_lighting = 0
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/centcom/uiuroof
-	name = "Unusual Incidents Unit Headquarters"
+	name = "Unusual Incidents Unit Roof"
 	icon_state = "Sleep"
 	requires_power = 0
 	dynamic_lighting = 0
