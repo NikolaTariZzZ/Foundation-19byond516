@@ -140,7 +140,7 @@
 	character = SSjobs.equip_rank(character, job.title, 1)					//equips the human
 
 	// AIs don't need a spawnpoint, they must spawn at an empty core
-	if(character.mind.assigned_role == "AIC")
+	if(character.mind.assigned_role == "ИИ")
 
 		character = character.AIize(move = FALSE) // AIize the character, but don't move them yet
 
