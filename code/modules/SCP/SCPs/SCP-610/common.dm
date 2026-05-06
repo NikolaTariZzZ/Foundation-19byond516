@@ -221,7 +221,7 @@
 		visible_message(SPAN_WARNING("[src] withers away without corruption to sustain it!"))
 		qdel(src)
 
-/obj/structure/corruption/maw/Crossed(var/atom/movable/AM)
+/obj/structure/corruption/maw/Crossed(atom/movable/AM)
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(H in trapped_mobs || H.lying)
@@ -243,7 +243,7 @@
 		trapped_mobs += H
 		addtimer(CALLBACK(src, PROC_REF(release_mob), H), trap_cooldown)
 
-/obj/structure/corruption/maw/proc/release_mob(var/mob/living/carbon/human/H)
+/obj/structure/corruption/maw/proc/release_mob(mob/living/carbon/human/H)
 	if(H && !QDELETED(H))
 		trapped_mobs -= H
 
@@ -359,7 +359,7 @@
 				if(H && H.stat != DEAD)
 					complete_transformation(H)
 
-/datum/disease/scp610/proc/complete_transformation(var/mob/living/carbon/human/H)
+/datum/disease/scp610/proc/complete_transformation(mob/living/carbon/human/H)
 	var/transform_type = pickweight(list(
 		"slasher" = 50,
 		"puker" = 30,

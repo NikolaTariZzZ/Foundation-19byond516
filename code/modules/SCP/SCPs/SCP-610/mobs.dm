@@ -6,7 +6,7 @@
 // SOUND HELPER
 // ============================================================================
 
-/proc/play_random_flesh_sound(var/atom/source, var/vol = 30)
+/proc/play_random_flesh_sound(atom/source, vol = 30)
 	var/list/sounds = list(
 		'sounds/scp/610/610_flesh.ogg',
 		'sounds/scp/610/610_flesh_2.ogg',
@@ -20,7 +20,7 @@
 // HELPER - Check if mob is allied
 // ============================================================================
 
-/proc/is_scp610_mob(var/mob/M)
+/proc/is_scp610_mob(mob/M)
 	return (istype(M, /mob/living/simple_animal/hostile/scp610_slasher) || istype(M, /mob/living/simple_animal/hostile/scp610_leaper) || istype(M, /mob/living/simple_animal/hostile/scp610_lurker) || istype(M, /mob/living/simple_animal/hostile/scp610_puker))
 
 // ============================================================================
@@ -49,7 +49,7 @@
 	add_language("Scarred Hivemind")
 	default_language = all_languages["Scarred Hivemind"]
 
-/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_life(var/ambient_prob, var/ambient_cd, var/ambient_vol)
+/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_life(ambient_prob, ambient_cd, ambient_vol)
 	if(pixel_x != default_pixel_x || pixel_y != default_pixel_y)
 		pixel_x = default_pixel_x
 		pixel_y = default_pixel_y
@@ -57,12 +57,12 @@
 		play_random_flesh_sound(src, ambient_vol)
 		scp610_ambient_cooldown = world.time
 
-/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_move_sound(var/move_prob, var/move_cd)
+/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_move_sound(move_prob, move_cd)
 	if((world.time - scp610_move_cooldown) >= move_cd && prob(move_prob))
 		play_random_flesh_sound(src, 15)
 		scp610_move_cooldown = world.time
 
-/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_attack(var/atom/target, var/attack_sound, var/infect_chance)
+/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_attack(atom/target, attack_sound, infect_chance)
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
 		if(!is_scp610_mob(H) && H.species?.name != "Scarred Creature")
@@ -72,7 +72,7 @@
 			return TRUE
 	return FALSE
 
-/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_death(var/death_infect_range, var/death_floor_range, var/death_floor_prob, var/death_gib_type)
+/mob/living/simple_animal/hostile/scp610_base/proc/scp610_do_death(death_infect_range, death_floor_range, death_floor_prob, death_gib_type)
 	var/turf/T = get_turf(src)
 	playsound(T, 'sounds/scp/610/610_flesh_2.ogg', 60, TRUE)
 	for(var/mob/living/carbon/human/H in range(death_infect_range, T))
@@ -166,7 +166,7 @@
 	if(.)
 		scp610_do_move_sound(40, 4 SECONDS)
 
-/mob/living/simple_animal/hostile/scp610_slasher/UnarmedAttack(var/atom/target)
+/mob/living/simple_animal/hostile/scp610_slasher/UnarmedAttack(atom/target)
 	if(scp610_do_attack(target, 'sounds/scp/610/610_flesh_3.ogg', 8))
 		return
 	return ..()
@@ -240,7 +240,7 @@
 	if(.)
 		scp610_do_move_sound(50, 3 SECONDS)
 
-/mob/living/simple_animal/hostile/scp610_leaper/UnarmedAttack(var/atom/target)
+/mob/living/simple_animal/hostile/scp610_leaper/UnarmedAttack(atom/target)
 	if(scp610_do_attack(target, 'sounds/scp/610/610_flesh_3.ogg', 8))
 		return
 	return ..()
@@ -391,7 +391,7 @@
 	if(.)
 		scp610_do_move_sound(30, 5 SECONDS)
 
-/mob/living/simple_animal/hostile/scp610_lurker/UnarmedAttack(var/atom/target)
+/mob/living/simple_animal/hostile/scp610_lurker/UnarmedAttack(atom/target)
 	if(scp610_do_attack(target, 'sounds/scp/610/610_flesh_3.ogg', 8))
 		return
 	return ..()
@@ -542,7 +542,7 @@
 	if(.)
 		scp610_do_move_sound(45, 3 SECONDS)
 
-/mob/living/simple_animal/hostile/scp610_puker/UnarmedAttack(var/atom/target)
+/mob/living/simple_animal/hostile/scp610_puker/UnarmedAttack(atom/target)
 	if(scp610_do_attack(target, 'sounds/scp/610/610_flesh_4.ogg', 8))
 		return
 	return ..()

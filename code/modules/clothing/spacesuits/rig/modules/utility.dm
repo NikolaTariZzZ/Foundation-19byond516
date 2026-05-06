@@ -622,7 +622,7 @@
 
 	update_tether()
 
-/obj/item/rig_module/kinesis/proc/release_subject(var/play_sound = FALSE)
+/obj/item/rig_module/kinesis/proc/release_subject(play_sound = FALSE)
 	var/atom/movable/old_subject = subject
 
 	subject = null

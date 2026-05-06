@@ -80,7 +80,7 @@
 				to_chat(H, SPAN_DANGER("<i>Ribbit... ribbit...</i>"))
 			transformation_progress += 25
 
-/datum/disease/scp306/proc/complete_transformation(var/mob/living/carbon/human/H)
+/datum/disease/scp306/proc/complete_transformation(mob/living/carbon/human/H)
 	H.visible_message(SPAN_DANGER("<b>[H.name]</b> finishes transforming into a giant frog!"))
 	playsound(get_turf(H), 'sounds/scp/306/croak.ogg', 70, TRUE)
 

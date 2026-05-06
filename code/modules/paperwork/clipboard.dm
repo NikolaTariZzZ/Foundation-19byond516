@@ -155,13 +155,12 @@
 			var/obj/item/paper/P = locate(href_list["read"])
 
 			if(P && (P.loc == src) && istype(P, /obj/item/paper) )
-
-			if(!(istype(usr, /mob/living/carbon/human) || isghost(usr) || istype(usr, /mob/living/silicon)))
-				show_browser(usr, "<html><head><meta charset=\"UTF-8\"><title>[P.name]</title></head><body>[stars(P.info)][P.stamps]</body></html>", "window=[P.name]")
-				onclose(usr, "[P.name]")
-			else
-				show_browser(usr, "<html><head><meta charset=\"UTF-8\"><title>[P.name]</title></head><body>[P.info][P.stamps]</body></html>", "window=[P.name]")
-				onclose(usr, "[P.name]")
+				if(!(istype(usr, /mob/living/carbon/human) || isghost(usr) || istype(usr, /mob/living/silicon)))
+					show_browser(usr, "<html><head><meta charset=\"UTF-8\"><title>[P.name]</title></head><body>[stars(P.info)][P.stamps]</body></html>", "window=[P.name]")
+					onclose(usr, "[P.name]")
+				else
+					show_browser(usr, "<html><head><meta charset=\"UTF-8\"><title>[P.name]</title></head><body>[P.info][P.stamps]</body></html>", "window=[P.name]")
+					onclose(usr, "[P.name]")
 
 		else if(href_list["look"])
 			var/obj/item/photo/P = locate(href_list["look"])
