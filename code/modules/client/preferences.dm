@@ -36,6 +36,8 @@
 
 	// Mob preview
 	var/icon/preview_icon = null
+	/// Bumped whenever preview icon is regenerated, used to bypass browser caching.
+	var/preview_icon_rsc_id = 0
 
 	var/client/client = null
 	var/client_ckey = null

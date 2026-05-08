@@ -12,7 +12,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	var/static/list/available_factions = list(
 		"Глобальная Оккультная Коалиция" = "goc",
 		"Повстанцы Хаоса" = "chaos",
-		"Длань Змеи" = "serpent"
+		"Длань Змея" = "serpent"
 	)
 	var/traitor_faction = null
 
@@ -53,7 +53,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 				traitor_faction = "goc"
 			else
 				traitor_faction = available_factions[chosen_name]
-			to_chat(target.current, "Вы – агент [chosen_name] под глубоким прикрытием.")
+			to_chat(target.current, "Вы – агент организации «[chosen_name]» под глубоким прикрытием.")
 
 		// Обязательный ввод целей
 		propose_custom_objectives(target.current)
