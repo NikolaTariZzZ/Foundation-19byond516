@@ -1,6 +1,6 @@
 /datum/map/site53
 	name = "Зона 53"
-	full_name = "Зона Фонда 53"
+	full_name = "Фонд SCP - Зона 53"
 	path = "site53"
 	flags = MAP_HAS_BRANCH | MAP_HAS_RANK
 	station_levels = list(1,2,3,4)
@@ -21,7 +21,7 @@
 	allowed_spawns = list("Cryogenic Storage", "D-Cells")
 	default_spawn = "Cryogenic Storage"
 
-	station_name  = "Зона Фонда 53"
+	station_name  = "Фонд SCP - Зона 53"
 	station_short = "Зона 53"
 	dock_name     = "Аварийная Зона-91"
 	boss_name     = "Североамериканское командование Фонда"
@@ -96,7 +96,8 @@
 		/decl/audio/track/author_of_my_obituary,
 		/decl/audio/track/fall_of_ganzir,
 		/decl/audio/track/dawn_of_the_moors_main_menu,
-		/decl/audio/track/scp_cb_main_menu
+		/decl/audio/track/scp_cb_main_menu,
+		/decl/audio/track/severedreality
 	// 	/decl/audio/track/bookburners, // no scp vibe
 	//	/decl/audio/track/the_bookburners_v2, // no scp vibe
 	//	/decl/audio/track/goc_spawn_theme2 // no scp vibe

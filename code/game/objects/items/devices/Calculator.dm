@@ -214,7 +214,7 @@
 		var/op_type = null
 		if(char == "+" || char == "-")
 			var/unary = FALSE
-			if(i == 1 || copytext(expr, i-1, i) in list("(", "^", "*", "/", "+", "-"))
+			if((i == 1) || (copytext(expr, i-1, i) in list("(", "^", "*", "/", "+", "-")))
 				unary = TRUE
 			if(unary)
 				op = "neg"
