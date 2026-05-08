@@ -151,7 +151,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. = list()
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	send_rsc(user, pref.preview_icon, "previewicon.png")
+	var/preview_rsc_key = "previewicon_[pref.preview_icon_rsc_id].png"
+	send_rsc(user, pref.preview_icon, preview_rsc_key)
 
 	var/datum/species/mob_species = all_species[pref.species]
 	var/title = "<b>Раса<a href='byond://?src=\ref[src];show_species=1'><small>?</small></a>:</b> <a href='byond://?src=\ref[src];set_species=1'>[mob_species.name]</a>"
@@ -268,7 +269,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		. += "</table><br>"
 
 	. += "</td><td><b>Превью</b><br>"
-	. += "<div class='statusDisplay'><center><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div>"
+	. += "<div class='statusDisplay'><center><img src=[preview_rsc_key] width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div>"
 	. += "<br><a href='byond://?src=\ref[src];cycle_bg=1'>Сменить фон</a>"
 	. += "<br><a href='byond://?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Скрыть снаряжение" : "Показать снаряжение"]</a>"
 	. += "<br><a href='byond://?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Скрыть экипировку" : "Показать экипировку"]</a>"
@@ -277,12 +278,12 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "<b>Волосы</b><br>"
 	if(has_flag(mob_species, HAS_HAIR_COLOR))
 		. += "<a href='byond://?src=\ref[src];hair_color=1'>Изменить цвет</a> <font face='fixedsys' size='3' color='#[num2hex(pref.r_hair & 0xFF)][num2hex(pref.g_hair & 0xFF)][num2hex(pref.b_hair & 0xFF)]'><table style='display:inline;' bgcolor='#[num2hex(pref.r_hair & 0xFF)][num2hex(pref.g_hair & 0xFF)][num2hex(pref.b_hair & 0xFF)]'><tr><td>__</td></tr></table></font> "
-	. += " Стиль: [UIBUTTON("hair_style=1;decrement", "<", null)][UIBUTTON("hair_style=1;increment", ">", null)]<a href='byond://?src=\ref[src];hair_style=1'>[pref.h_style]</a><br>"
+	. += " Стиль: [UIBUTTON("hair_style=1;decrement", "<", null)][UIBUTTON("hair_style=1;increment", ">", null)]<a href='byond://?src=\ref[src];hair_style=1;open_picker=1'>[pref.h_style]</a><br>"
 
 	. += "<br><b>Борода и усы</b><br>"
 	if(has_flag(mob_species, HAS_HAIR_COLOR))
 		. += "<a href='byond://?src=\ref[src];facial_color=1'>Изменить цвет</a> <font face='fixedsys' size='3' color='#[num2hex(pref.r_facial & 0xFF)][num2hex(pref.g_facial & 0xFF)][num2hex(pref.b_facial & 0xFF)]'><table  style='display:inline;' bgcolor='#[num2hex(pref.r_facial & 0xFF)][num2hex(pref.g_facial & 0xFF)][num2hex(pref.b_facial & 0xFF)]'><tr><td>__</td></tr></table></font> "
-	. += " Стиль: [UIBUTTON("facial_style=1;decrement", "<", null)][UIBUTTON("facial_style=1;increment", ">", null)]<a href='byond://?src=\ref[src];facial_style=1'>[pref.f_style]</a><br>"
+	. += " Стиль: [UIBUTTON("facial_style=1;decrement", "<", null)][UIBUTTON("facial_style=1;increment", ">", null)]<a href='byond://?src=\ref[src];facial_style=1;open_picker=1'>[pref.f_style]</a><br>"
 
 	if(has_flag(mob_species, HAS_EYE_COLOR))
 		. += "<br><b>Глаза</b><br>"
@@ -396,22 +397,20 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	else if(href_list["hair_style"])
 		var/list/valid_hairstyles = mob_species.get_hair_styles()
-		var/new_h_style
-		var/hair_index = list_find(valid_hairstyles, pref.h_style)
-
 		if (href_list["increment"])
+			var/hair_index = list_find(valid_hairstyles, pref.h_style)
 			if (hair_index < valid_hairstyles.len && valid_hairstyles[hair_index + 1])
-				new_h_style = valid_hairstyles[hair_index + 1]
+				pref.h_style = valid_hairstyles[hair_index + 1]
+				return TOPIC_REFRESH_UPDATE_PREVIEW
 		else if (href_list["decrement"])
+			var/hair_index = list_find(valid_hairstyles, pref.h_style)
 			if (hair_index > 1 && valid_hairstyles[hair_index - 1])
-				new_h_style = valid_hairstyles[hair_index - 1]
-		else
-			new_h_style = tgui_input_list(user, "Выберите стиль прически персонажа:", CHARACTER_PREFERENCE_INPUT_TITLE, valid_hairstyles, pref.h_style)
-
-		mob_species = all_species[pref.species]
-		if(new_h_style && CanUseTopic(user) && (new_h_style in mob_species.get_hair_styles()))
-			pref.h_style = new_h_style
-			return TOPIC_REFRESH_UPDATE_PREVIEW
+				pref.h_style = valid_hairstyles[hair_index - 1]
+				return TOPIC_REFRESH_UPDATE_PREVIEW
+		else if(href_list["open_picker"])
+			var/datum/tgui/hair_picker/picker = new(pref)
+			picker.tgui_interact(user)
+			return TOPIC_HANDLED
 
 	else if(href_list["facial_color"])
 		if(!has_flag(mob_species, HAS_HAIR_COLOR))
@@ -471,6 +470,10 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		else if (href_list["decrement"])
 			if (hair_index > 1 && valid_facialhairstyles[hair_index - 1])
 				new_f_style = valid_facialhairstyles[hair_index - 1]
+		else if(href_list["open_picker"])
+			var/datum/tgui/facial_hair_picker/picker = new(pref)
+			picker.tgui_interact(user)
+			return TOPIC_HANDLED
 		else
 			new_f_style = tgui_input_list(user, "Выберите стиль растительности на лице:", CHARACTER_PREFERENCE_INPUT_TITLE, valid_facialhairstyles, pref.f_style)
 
@@ -688,6 +691,13 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	else if(href_list["cycle_bg"])
 		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["select_hairstyle"])
+		var/style = href_list["select_hairstyle"]
+		if(style in mob_species.get_hair_styles())   // используем уже существующую mob_species
+			pref.h_style = style
+			close_browser(user, "window=hairstylepicker")
+			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	return ..()
 
