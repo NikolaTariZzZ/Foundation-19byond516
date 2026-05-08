@@ -3610,4 +3610,7 @@
 #include "maps\~unit_tests\unit_testing.dm"
 #include "code\modules\client\tgui\hair_picker.dm"
 #include "code\modules\client\tgui\facial_hair_picker.dm"
+#include "code\modules\SCP\SCPs\SCP-993.dm"
+#include "code\modules\SCP\SCPs\SCP-860.dm"
+#include "code\modules\SCP\SCPs\SCP-005.dm"
 // END_INCLUDE
