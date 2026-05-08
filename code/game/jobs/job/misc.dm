@@ -254,7 +254,7 @@
 	duties = "Смешивайте напитки для персонала. Управляйте баром."
 
 /datum/job/chaplain
-	title = "Капеллан"
+	title = "Священник"
 	department = "Гражданский"
 	department_flag = CIV|SRV
 
