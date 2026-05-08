@@ -288,10 +288,6 @@
 	if(nutrition >= 1)
 		AdjustNutrition(-nutriloss)
 
-	else if(!is_sleeping)
-		icon_state = icon_living
-		update_icons()
-
 	if(!is_sleeping)
 		icon_state = resting ? icon_rest : icon_living
 		update_icons()

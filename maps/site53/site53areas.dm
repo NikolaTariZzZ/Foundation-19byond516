@@ -599,6 +599,11 @@
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	icon_state = "checkpoint1"
 
+/area/site53/tlcz/thirdfloorcheckpoint
+	name = "\improper Third Floor Containment Zone Checkpoint"
+	area_flags = AREA_FLAG_RAD_SHIELDED
+	icon_state = "checkpoint1"
+
 /area/site53/ulcz/hallways
 	name = "\improper Upper Light Containment Hallway"
 	icon_state = "hallC1"
@@ -628,6 +633,12 @@
 	'sounds/ambience/lcz/crb/Ambient8.ogg'
 	)
 */
+
+/area/site53/ulcz/thirdfloorhallways
+	name = "\improper Third Floor Light Containment Hallway"
+	icon_state = "hallC1"
+	area_flags = AREA_FLAG_RAD_SHIELDED
+	sound_env = LARGE_ENCLOSED
 
 /area/site53/ulcz/office
 	name = "\improper Upper Light Containment Office"
@@ -1338,8 +1349,13 @@
 	icon_state = "research"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
-/area/site53/lhcz/scp939observation
-	name = "\improper SCP-939 Observation Room"
+/area/site53/lhcz/scp939upperobservation
+	name = "\improper SCP-939 Upper Observation Room"
+	icon_state = "research"
+	area_flags = AREA_FLAG_RAD_SHIELDED
+
+/area/site53/lhcz/scp939lowerobservation
+	name = "\improper SCP-939 Lower Observation Room"
 	icon_state = "research"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
