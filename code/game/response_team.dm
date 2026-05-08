@@ -75,21 +75,6 @@ var/global/datum/antagonist/mtf/active_ert = null
 	send_emergency_team = 0
 	active_ert = null
 
-
-	// Принудительно заполняем точки спавна (если вдруг не инициализировано)
-	if(!team.starting_locations || !team.starting_locations.len)
-		team.get_starting_locations()
-
-	command_announcement.Announce("It would appear that a Mobile Task Force was requested for [station_name()]. We will prepare and send one as soon as possible.", "[GLOB.using_map.boss_name]", 'sounds/scp/mtf_dispatch.ogg')
-
-	team.reason = reason
-	active_ert = team
-
-	send_emergency_team = 1
-	sleep(600 * 5)
-	send_emergency_team = 0
-	active_ert = null
-
 /client/verb/JoinResponseTeam()
 	set name = "Join MTF Squad"
 	set category = "OOC"
