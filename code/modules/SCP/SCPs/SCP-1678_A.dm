@@ -1,171 +1,161 @@
-// ============================================================================
-// SCP-1678 AI HOLDER
-// ============================================================================
+// ==================================================================
+// SCP-1678-A - моб
+// ==================================================================
 
-/datum/ai_holder/simple_animal/melee/scp1678
-	mauling = TRUE
-	vision_range = 10
-
-// ============================================================================
-// NATURAL WEAPON
-// ============================================================================
-
-/obj/item/natural_weapon/scp1678_baton
-	name = "police baton"
-	attack_verb = list("struck", "hit", "bashed", "beaten")
-	hitsound = 'sounds/scp/1678/whistle.ogg'
-	damtype = BRUTE
-	force = 20
-	edge = FALSE
-	sharp = FALSE
-	armor_penetration = 5
-
-// ============================================================================
-// SAY LIST
-// ============================================================================
-
-/datum/say_list/scp1678
-	speak = list("You are being detained. Do not resist.")
-	speak_sounds = list('sounds/scp/1678/whistle.ogg')
-
-// ============================================================================
-// SCP-1678 MOB
-// ============================================================================
-
-/mob/living/simple_animal/hostile/scp1678
+/mob/living/carbon/human/scp1678
 	name = "tall masked figure"
-	desc = "A tall figure with fabric scraps covering its face. It carries a police baton."
+	desc = "A tall, unnerving figure with fabric scraps covering its face."
 	icon = 'icons/SCP/scp-1678.dmi'
-	icon_state = "1678_A"
-	icon_living = "1678_A"
-	icon_dead = "1678_A_dead"
-
-	health = 300
-	maxHealth = 300
+	icon_state = null
 
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
 	see_in_dark = 7
+	status_flags = CANPUSH
+	maxHealth = 250
+	health = 250
 
-	can_pull_size = 5
-	a_intent = "harm"
-	can_be_buckled = FALSE
+	roundstart_traits = list(TRAIT_ADVANCED_TOOL_USER)
 
-	movement_cooldown = 2
-	say_list_type = /datum/say_list/scp1678
-
-	default_pixel_x = -8
-	pixel_x = -8
-	default_pixel_y = -16
-	pixel_y = -16
-
-	ai_holder_type = /datum/ai_holder/simple_animal/melee/scp1678
-	melee_attack_delay = 2 SECONDS
-	natural_weapon = /obj/item/natural_weapon/scp1678_baton
-
-	var/door_cooldown = 5 SECONDS
-	var/attack_cooldown_time = 2 SECONDS
-
-	var/door_cooldown_track = 0
-	var/attack_cooldown_track = 0
+	var/emote_cooldown = 5 SECONDS
+	var/emote_cooldown_track = 0
 	var/area/spawn_area
 	var/turf/start_turf
 
-/mob/living/simple_animal/hostile/scp1678/Initialize(mapload)
-	. = ..()
-	pixel_x = default_pixel_x
-	pixel_y = default_pixel_y
+/mob/living/carbon/human/scp1678/Initialize(mapload, new_species = "SCP-1678-A")
+	. = ..(mapload, "SCP-1678-A")
+	SCP = new /datum/scp(src, "tall masked figure", SCP_EUCLID, "1678-A", SCP_PLAYABLE|SCP_ROLEPLAY)
 
-	SCP = new /datum/scp(
-		src,
-		"tall masked figure",
-		SCP_EUCLID,
-		"1678-A",
-		SCP_PLAYABLE | SCP_ROLEPLAY
-	)
-	add_verb(src, /client/proc/scpooc)
+	add_verb(src, list(/client/proc/scpooc, /mob/living/carbon/human/scp1678/verb/SayPhrase))
+
+	add_language(LANGUAGE_ENGLISH)
+	add_language(LANGUAGE_EAL)
+	add_language(LANGUAGE_GUTTER)
+
 	SCP.min_time = 15 MINUTES
 	SCP.min_playercount = 10
 
 	spawn_area = get_area(src)
 	start_turf = get_turf(src)
 
-/mob/living/simple_animal/hostile/scp1678/Life()
-	. = ..()
-	if(pixel_x != default_pixel_x || pixel_y != default_pixel_y)
-		pixel_x = default_pixel_x
-		pixel_y = default_pixel_y
+	// Рентгеновское зрение
+	if(!(MUTATION_XRAY in mutations))
+		mutations.Add(MUTATION_XRAY)
+		update_mutations()
+		update_sight()
 
-/mob/living/simple_animal/hostile/scp1678/say(message, datum/language/speaking = null, whispering)
-	to_chat(src, SPAN_NOTICE("You cannot speak."))
+	queue_icon_update()
+
+// ==================================================================
+// Отрисовка иконки (минимальная, как у 106)
+// ==================================================================
+
+/mob/living/carbon/human/scp1678/update_icons()
+	return
+
+/mob/living/carbon/human/scp1678/on_update_icon()
+	if(lying || resting)
+		var/matrix/M = matrix()
+		transform = M.Turn(90)
+	else
+		transform = null
+	return
+
+// ==================================================================
+// Защита от падений и оглушений
+// ==================================================================
+
+/mob/living/carbon/human/scp1678/handle_stunned()
+	if(stunned)
+		stunned = 0
 	return 0
 
-/mob/living/simple_animal/hostile/scp1678/verb/Detain()
-	set name = "Detain"
-	set category = "SCP-1678"
-	set desc = "Order someone to stop."
+/mob/living/carbon/human/scp1678/handle_weakened()
+	if(weakened)
+		weakened = 0
+	return 0
 
-	playsound(src, 'sounds/scp/1678/whistle.ogg', 50, 1)
-	visible_message(SPAN_DANGER("[src] blows a whistle and shouts: 'You are being detained. Do not resist!'"))
+/mob/living/carbon/human/scp1678/succumb()
+	to_chat(src, SPAN_WARNING("You cannot succumb!"))
+	return
 
-/mob/living/simple_animal/hostile/scp1678/UnarmedAttack(atom/A)
-	if(A.SCP)
-		return
-	if((world.time - attack_cooldown_track) < attack_cooldown_time)
-		return
-
-	if(ishuman(A))
-		var/mob/living/carbon/human/target = A
-		if(target.stat == DEAD)
-			return
-		playsound(src, 'sounds/scp/1678/whistle.ogg', 50, 1)
-		visible_message(SPAN_DANGER("[src] blows a whistle and strikes [target] with the baton!"))
-		target.apply_damage(20, BRUTE)
-		target.Weaken(3)
-		attack_cooldown_track = world.time
-		return
-
-	if(istype(A, /obj/machinery/door))
-		OpenDoor(A)
-		attack_cooldown_track = world.time
-		return
-
-	..()
-
-/mob/living/simple_animal/hostile/scp1678/Bump(atom/A)
+/mob/living/carbon/human/scp1678/Life()
 	. = ..()
-	if(A == src || stunned || weakened)
+	if(lying) lying = 0
+	if(resting) resting = 0
+	if(weakened) weakened = 0
+	if(stunned) stunned = 0
+	if(stat == UNCONSCIOUS) stat = CONSCIOUS
+
+/mob/living/carbon/human/scp1678/get_pressure_weakness()
+	return 0
+
+/mob/living/carbon/human/scp1678/handle_breath()
+	return 1
+
+// ==================================================================
+// Скорость (медленнее обычного человека)
+// ==================================================================
+
+/mob/living/carbon/human/scp1678/movement_delay(decl/move_intent/using_intent = move_intent)
+	return 4.0
+
+// ==================================================================
+// Звуки шагов (опционально)
+// ==================================================================
+
+/mob/living/carbon/human/scp1678/play_special_footstep_sound(turf/T, volume = 30, range = 1)
+	playsound(T, 'sounds/effects/footstep/gravel1.ogg', max(20, volume), TRUE, range)
+	return TRUE
+
+// ==================================================================
+// Ограничение речи (только через SayPhrase)
+// ==================================================================
+
+/mob/living/carbon/human/scp1678/say(message, datum/language/speaking = null, whispering)
+	to_chat(src, SPAN_NOTICE("You cannot speak normally. Use 'Say Phrase'."))
+	return 0
+
+/mob/living/carbon/human/scp1678/verb/SayPhrase()
+	set name = "Say Phrase"
+	set category = "SCP-1678"
+	set desc = "Speak one of your pre-defined phrases"
+
+	if(stat == DEAD)
 		return
-	if(istype(A, /obj/machinery/door))
-		OpenDoor(A)
-		return
-	if(isliving(A) && canClick())
-		UnarmedAttack(A)
-
-/mob/living/simple_animal/hostile/scp1678/proc/OpenDoor(obj/machinery/door/A)
-	if((world.time - door_cooldown_track) < door_cooldown)
-		return
-	if(!istype(A) || !A.density || !A.Adjacent(src))
+	if(world.time < emote_cooldown_track)
+		to_chat(src, SPAN_WARNING("You cannot speak yet. Wait [round((emote_cooldown_track - world.time) / 10)] seconds."))
 		return
 
-	if(istype(A, /obj/machinery/door/blast))
-		visible_message(SPAN_WARNING("[src] stares at [A], unable to force it open."))
-		door_cooldown_track = world.time + door_cooldown
+	var/list/phrases = list(
+		"By order of the Watch, you are to be detained.",
+		"Remain calm. Resistance will be met with force.",
+		"Halt, citizen. Your papers are out of order.",
+		"Step out of the shadows. Compliance is mandatory.",
+		"You are in violation of the Public Decency Act."
+	)
+	var/selected_phrase = input(src, "Choose a phrase:", "SCP-1678 Phrases") as null|anything in phrases
+	if(!selected_phrase)
 		return
 
-	var/open_time = 8 SECONDS
+	playsound(src, 'sounds/scp/1678/whistle.ogg', 40, 1)
+	visible_message(SPAN_DANGER("[src] utters in a metallic drone: '[selected_phrase]'"))
+	emote_cooldown_track = world.time + emote_cooldown
 
-	A.visible_message(SPAN_WARNING("[src] slowly forces open [A]..."))
-	door_cooldown_track = world.time + open_time
+// ==================================================================
+// Смерть (исчезает)
+// ==================================================================
 
-	if(!do_after(src, open_time, A))
-		return
+/mob/living/carbon/human/scp1678/death(gibbed)
+	visible_message(SPAN_DANGER("[src] collapses and crumbles into dust!"))
+	playsound(get_turf(src), 'sounds/scp/1678/whistle.ogg', 30, 1)
+	qdel(src)
 
-	A.set_broken(TRUE)
-	A.open(1)
-	playsound(src, 'sounds/scp/1678/whistle.ogg', 50, 1)
+// ==================================================================
+// AI для автоматического передвижения (когда не под игроком)
+// ==================================================================
 
-/mob/living/simple_animal/hostile/scp1678/death(gibbed, deathmessage, show_dead_message)
-	visible_message(SPAN_DANGER("[src] collapses. The whistle dies out."))
-	pixel_x = default_pixel_x
-	pixel_y = default_pixel_y
-	return ..()
+/datum/ai_holder/simple_animal/melee/scp1678
+	mauling = TRUE
+	vision_range = 10
+
+/mob/living/carbon/human/scp1678/ai_holder_type = /datum/ai_holder/simple_animal/melee/scp1678

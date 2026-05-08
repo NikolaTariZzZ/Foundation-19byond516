@@ -290,3 +290,283 @@ GLOBAL_LIST_EMPTY(scp860_return_spawns)
 
 /obj/effect/landmark/scp860_return/LateInitialize()
 	return
+
+// ============================================================================
+// SCP-860-2 AI HOLDER
+// ============================================================================
+
+/datum/ai_holder/simple_animal/melee/scp860_2
+	vision_range = 4
+	mauling = TRUE
+
+// ============================================================================
+// SCP-860-2 SAY LIST
+// ============================================================================
+
+/datum/say_list/scp860_2
+	emote_hear = list(
+		"lets out a low, guttural growl",
+		"emits a hollow, clicking sound",
+		"breathes heavily, sounding like rustling leaves"
+	)
+	emote_see = list(
+		"tilts its skull-like head",
+		"scratches the ground with sharp claws",
+		"stares with glowing yellow eyes"
+	)
+	speak = list()
+
+// ============================================================================
+// NATURAL WEAPON
+// ============================================================================
+
+/obj/item/natural_weapon/scp860_2_claws
+	name = "sharp claws"
+	attack_verb = list("slashes", "claws", "tears", "rips")
+	hitsound = 'sounds/effects/footstep/wood1.ogg'
+	damtype = BRUTE
+	force = 25
+
+// ============================================================================
+// SCP-860-2 MONSTER
+// ============================================================================
+
+/mob/living/simple_animal/hostile/scp860_2
+	name = "leshy"
+	desc = "A gaunt figure with a skull-like head, twisted horns, and hollow yellow eyes. Moss and bark cover its body."
+	icon = 'icons/SCP/scp-860_2.dmi'
+	icon_state = "monster"
+	icon_living = "monster"
+	icon_dead = null
+	pixel_x = -8          // Для иконки 48x64: (48-32)/2 = 8, смещаем влево на -8
+	pixel_y = -16         // Для иконки 48x64: (64-32)/2 = 16, смещаем вниз на -16
+	default_pixel_x = -8
+	default_pixel_y = -16
+
+	maxHealth = 2000
+	health = 2000
+	movement_cooldown = 5          // Повышенная скорость (было 10)
+	attack_delay = 2
+
+	see_invisible = SEE_INVISIBLE_NOLIGHTING
+	see_in_dark = 10
+
+	faction = "scp"
+	response_help = "hesitantly reaches toward"
+	response_disarm = "shoves against"
+	response_harm = "strikes"
+	attacktext = list("slashes", "claws", "tears", "rips")
+	mob_size = MOB_LARGE
+
+	status_flags = CANPUSH
+	density = TRUE
+	anchored = FALSE
+	a_intent = "harm"
+	natural_weapon = /obj/item/natural_weapon/scp860_2_claws
+
+	ai_holder_type = /datum/ai_holder/simple_animal/melee/scp860_2
+	say_list_type = /datum/say_list/scp860_2
+
+	// Cooldowns
+	var/sound_cooldown = 30 SECONDS
+	var/sound_cooldown_track = 0
+	var/leap_cooldown = 12 SECONDS
+	var/leap_cooldown_track = 0
+	var/leap_range = 5
+	var/camouflage_cooldown = 10 SECONDS
+	var/camouflage_cooldown_track = 0
+	var/camouflage_active = FALSE
+	var/aiming_mode = FALSE          // Для режима выбора точки прыжка
+
+	// Sounds
+	var/list/human_sounds = list(
+		'sounds/scp/860/whisper1.ogg',
+		'sounds/scp/860/whisper2.ogg',
+		'sounds/scp/860/whisper3.ogg',
+		'sounds/scp/860/whisper4.ogg',
+		'sounds/scp/860/cry.ogg',
+		'sounds/scp/860/scream_m.ogg',
+		'sounds/scp/860/scream_f.ogg'
+	)
+
+	var/list/attack_sounds = list(
+		'sounds/effects/footstep/wood1.ogg',
+		'sounds/effects/footstep/wood2.ogg',
+		'sounds/effects/footstep/wood3.ogg',
+		'sounds/effects/footstep/wood4.ogg',
+		'sounds/effects/footstep/wood5.ogg'
+	)
+
+/mob/living/simple_animal/hostile/scp860_2/Initialize(mapload)
+	. = ..()
+	SCP = new /datum/scp(
+		src,
+		"leshy",
+		SCP_EUCLID,
+		"860-2",
+		SCP_PLAYABLE|SCP_ROLEPLAY
+	)
+
+	add_verb(src, list(
+		/mob/living/simple_animal/hostile/scp860_2/verb/Emit_Human_Sound,
+		/mob/living/simple_animal/hostile/scp860_2/verb/Leap,
+		/mob/living/simple_animal/hostile/scp860_2/verb/Toggle_Camouflage
+	))
+
+	add_language(LANGUAGE_EAL, FALSE)
+	add_language(LANGUAGE_GUTTER, FALSE)
+	add_language(LANGUAGE_ENGLISH, FALSE)
+
+// Звук шагов
+/mob/living/simple_animal/hostile/scp860_2/Move()
+	. = ..()
+	if(. && isturf(loc))
+		playsound(loc, pick('sounds/effects/footstep/grass1.ogg','sounds/effects/footstep/grass2.ogg','sounds/effects/footstep/grass3.ogg','sounds/effects/footstep/grass4.ogg'), 20, TRUE)
+
+// Атака
+/mob/living/simple_animal/hostile/scp860_2/UnarmedAttack(atom/A, proximity_flag)
+	if(!proximity_flag)
+		return
+	if(isliving(A))
+		var/mob/living/L = A
+		if(L.stat != DEAD)
+			do_attack_animation(A)
+			playsound(L, pick(attack_sounds), 50, TRUE)
+			L.apply_damage(rand(25, 35), BRUTE)
+			if(ishuman(L))
+				to_chat(L, SPAN_DANGER("[src] slashes you with its claws!"))
+			return
+	..()
+
+// === 1. ЧЕЛОВЕЧЕСКИЕ ЗВУКИ ===
+/mob/living/simple_animal/hostile/scp860_2/verb/Emit_Human_Sound()
+	set name = "Emit Human Sound"
+	set category = "Abilities"
+	set desc = "Produce a human-like sound to lure prey"
+
+	if(stat == DEAD)
+		return
+	if(world.time < sound_cooldown_track)
+		to_chat(src, SPAN_WARNING("You cannot produce another sound yet. Wait [round((sound_cooldown_track - world.time) / 10)] seconds."))
+		return
+
+	var/chosen_sound = pick(human_sounds)
+	var/list/nearby_humans = list()
+	for(var/mob/living/carbon/human/H in view(10, src))
+		if(H != src && H.stat != DEAD)
+			nearby_humans += H
+
+	playsound(get_turf(src), chosen_sound, 50, FALSE, 10)
+	for(var/mob/living/carbon/human/H in nearby_humans)
+		if(findtext("[chosen_sound]", "whisper"))
+			to_chat(H, SPAN_DANGER("You hear a faint whisper from the darkness."))
+			H.adjust_hallucination(10)
+		else if(findtext("[chosen_sound]", "cry"))
+			to_chat(H, SPAN_WARNING("You hear someone sobbing in the distance."))
+			H.adjust_hallucination(15)
+		else if(findtext("[chosen_sound]", "scream"))
+			to_chat(H, SPAN_DANGER("A blood-curdling scream echoes through the forest!"))
+			H.adjust_hallucination(25)
+
+	visible_message(SPAN_ITALIC("[src] produces an unsettling sound that echoes through the forest."))
+	sound_cooldown_track = world.time
+
+// === 2. РЫВОК В ТОЧКУ ===
+/mob/living/simple_animal/hostile/scp860_2/verb/Leap()
+	set name = "Leap"
+	set category = "Abilities"
+	set desc = "Click on a tile to leap there, damaging anyone in the way"
+
+	if(stat == DEAD)
+		return
+	if(world.time < leap_cooldown_track)
+		to_chat(src, SPAN_WARNING("Leap is not ready yet! Wait [round((leap_cooldown_track - world.time) / 10)] seconds."))
+		return
+
+	aiming_mode = TRUE
+	to_chat(src, SPAN_DANGER("Leap ready! Click on a tile to jump there."))
+
+/mob/living/simple_animal/hostile/scp860_2/ClickOn(atom/A)
+	if(aiming_mode)
+		aiming_mode = FALSE
+		perform_leap(A)
+		return
+	..()
+
+/mob/living/simple_animal/hostile/scp860_2/proc/perform_leap(atom/target)
+	var/turf/T = get_turf(target)
+	if(!T || T.density)
+		to_chat(src, SPAN_WARNING("Can't leap there!"))
+		return
+
+	if(get_dist(src, T) > leap_range)
+		to_chat(src, SPAN_WARNING("Target too far away! Maximum range is [leap_range] tiles."))
+		return
+
+	leap_cooldown_track = world.time + leap_cooldown
+
+	visible_message(SPAN_DANGER("[src] leaps through the air with terrifying speed!"))
+	playsound(get_turf(src), pick(attack_sounds), 60, TRUE)
+
+	// Перемещаем
+	var/old_loc = src.loc
+	src.forceMove(T)
+
+	// Наносим урон всем в точке приземления и по пути
+	var/list/affected = list()
+	for(var/mob/living/carbon/human/H in range(0, T))
+		if(H != src && H.stat != DEAD)
+			affected += H
+
+	// Наносим урон
+	for(var/mob/living/carbon/human/H in affected)
+		H.apply_damage(20, BRUTE)
+		H.Weaken(3)
+		to_chat(H, SPAN_DANGER("[src] crashes into you!"))
+		playsound(get_turf(H), pick(attack_sounds), 50, TRUE)
+
+	// Если путь был длинным, проходим по линии и бьём дополнительно
+	var/list/intermediate = getline(old_loc, T)
+	for(var/turf/inter in intermediate)
+		if(inter == old_loc || inter == T) continue
+		for(var/mob/living/carbon/human/H in inter)
+			if(H != src && H.stat != DEAD && !(H in affected))
+				H.apply_damage(15, BRUTE)
+				H.Weaken(2)
+				to_chat(H, SPAN_DANGER("[src] crashes into you during the leap!"))
+				affected += H
+
+// === 3. МАСКИРОВКА ===
+/mob/living/simple_animal/hostile/scp860_2/verb/Toggle_Camouflage()
+	set name = "Toggle Camouflage"
+	set category = "Abilities"
+	set desc = "Merge with the environment, becoming nearly invisible except for your glowing eyes"
+
+	if(stat == DEAD)
+		return
+	if(!camouflage_active && world.time < camouflage_cooldown_track)
+		to_chat(src, SPAN_WARNING("Camouflage is on cooldown! Wait [round((camouflage_cooldown_track - world.time) / 10)] seconds."))
+		return
+
+	if(camouflage_active)
+		camouflage_active = FALSE
+		alpha = 255
+		icon_state = "monster"
+		to_chat(src, SPAN_NOTICE("You emerge from the shadows."))
+	else
+		camouflage_active = TRUE
+		icon_state = "eyes"
+		alpha = 80
+		to_chat(src, SPAN_DANGER("You blend into the surroundings. Only your eyes remain visible."))
+		camouflage_cooldown_track = world.time + camouflage_cooldown
+
+// === 4. НЕ МОЖЕТ ГОВОРИТЬ ===
+/mob/living/simple_animal/hostile/scp860_2/say(message, datum/language/speaking = null, whispering)
+	to_chat(src, SPAN_NOTICE("You cannot speak."))
+	return 0
+
+// === 5. СМЕРТЬ — ИСЧЕЗАЕТ ===
+/mob/living/simple_animal/hostile/scp860_2/death(gibbed)
+	visible_message(SPAN_DANGER("[src] crumbles into dust and vanishes!"))
+	playsound(get_turf(src), pick(attack_sounds), 50, TRUE)
+	qdel(src)
