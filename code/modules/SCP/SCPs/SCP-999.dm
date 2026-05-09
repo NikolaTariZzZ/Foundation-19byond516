@@ -20,6 +20,8 @@
 	var/sound_cooldown
 	///Sound cooldown
 	var/sound_cooldown_time = 5 SECONDS
+	///Tracks number of feedings for pixel_y growth
+	var/feeding_count = 0
 
 /mob/living/scp999/Initialize()
 	. = ..()
@@ -47,6 +49,10 @@
 		user.visible_message(SPAN_NOTICE("[user] feeds [O] to [name]!"),SPAN_NOTICE("You feed [O] to [name]!"))
 		resize *= 1.01
 		transform = matrix() * resize
+		feeding_count++
+		if(feeding_count >= 10)
+			feeding_count = 0
+			animate(user, pixel_y += 1, time = 1)
 		qdel(O)
 
 //Overrides

@@ -29,6 +29,9 @@
 /datum/ai_holder/simple_animal/retaliate/goat/react_to_attack(atom/movable/attacker)
 	. = ..()
 
+	if(holder == /mob/living/simple_animal/friendly) // dont attack his friends
+		return
+
 	if(holder.stat == CONSCIOUS && prob(50))
 		holder.visible_message(SPAN_WARNING("\The [holder] gets an evil-looking gleam in their eye."))
 

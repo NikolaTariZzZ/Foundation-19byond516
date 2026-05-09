@@ -302,6 +302,10 @@
 			to_chat(src, SPAN_WARNING("You cannot phase through [O]."))
 			return
 
+		if(istype(O, /obj/structure/railing))
+			to_chat(src, SPAN_WARNING("You cannot phase through [O]."))
+			return
+
 		// There can be more than one available dense object, but that doesn't matter
 		target_object = O
 
