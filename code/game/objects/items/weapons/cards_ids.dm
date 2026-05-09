@@ -806,6 +806,24 @@ GLOBAL_LIST_EMPTY(conversion_cards)
 	job_access_type = /datum/job/goirep
 	class = CLASS_A
 
+/obj/item/card/id/gocrep
+	name = "GOI represantive ID"
+	desc = "A blue ID. Looks like the person wearing this won't give it up easy."
+	icon_state = "goc"
+	item_state = "goc"
+	job_access_type = /datum/job/goirep
+	class = CLASS_A
+
+/obj/item/card/id/mcid
+	name = "Marshall, Carter, and Dark corporate liaison ID"
+	desc = "A golden ID. Looks like the person wearing this won't give it up easy."
+	icon_state = "mcid"
+	item_state = "mcid"
+	job_access_type = /datum/job/goirep
+	rank = "Представитель корпорации Маршалл, Картер и Дарк"
+	assignment = "Представитель корпорации Маршалл, Картер и Дарк"
+	class = CLASS_A
+
 /obj/item/card/id/adminlvl4
 	name = "administration ID"
 	desc = "A black ID. Looks like the person wearing this won't give it up easy."
@@ -819,6 +837,26 @@ GLOBAL_LIST_EMPTY(conversion_cards)
 	desc = "A black ID. Looks like the person wearing this won't give it up easy."
 	icon_state = "adminlvl5"
 	item_state = "Admin_ID"
+	job_access_type = /datum/job/captain
+	class = CLASS_A
+
+/obj/item/card/id/tribunal
+	name = "internal tribunal officer ID"
+	desc = "A purple ID. Looks like the person wearing this won't give it up easy."
+	icon_state = "tribunal"
+	item_state = "tribunal"
+	job_access_type = /datum/job/captain
+	rank = "Офицер Внутреннего Трибунала"
+	assignment = "Офицер Внутреннего Трибунала"
+	class = CLASS_A
+
+/obj/item/card/id/ethics
+	name = "ethics committee liasion ID"
+	desc = "A green ID. Looks like the person wearing this won't give it up easy."
+	icon_state = "ethics"
+	item_state = "ethics"
+	rank = "Представитель Комитета по Этике"
+	assignment = "Представитель Комитета по Этике"
 	job_access_type = /datum/job/captain
 	class = CLASS_A
 
