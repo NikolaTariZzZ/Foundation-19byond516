@@ -154,7 +154,7 @@
 	name = "EZ Supervisor Beret"
 	desc = "A black beret with a red and yellow badge, in the shape of two chevrons, it feels durable due to the materials it's been made from."
 	icon_state = "beret_supervisor_ez"
-	armor = list(melee = 35, bullet = 35, laser = 20,energy = 20, bomb = 15, bio = 15, rad = 15)
+	armor = list(melee = 40, bullet = 45, laser = 20,energy = 20, bomb = 15, bio = 15, rad = 15)
 
 /obj/item/clothing/head/beret/sec/sergeant
 	name = "Non-Commissioned Officer Beret"
