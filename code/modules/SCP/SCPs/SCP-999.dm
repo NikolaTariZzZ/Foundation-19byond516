@@ -50,9 +50,9 @@
 		resize *= 1.01
 		transform = matrix() * resize
 		feeding_count++
-		if(feeding_count >= 10)
+		if(feeding_count >= 5)
 			feeding_count = 0
-			animate(user, pixel_y += 1, time = 1)
+			pixel_y += 1
 		qdel(O)
 
 //Overrides
