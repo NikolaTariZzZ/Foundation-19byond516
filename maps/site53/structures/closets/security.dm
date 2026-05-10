@@ -368,6 +368,7 @@
 		/obj/item/melee/telebaton,
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/accessory/storage/holster/thigh,
+		/obj/item/storage/belt/holster/security/tactical,
 		/obj/item/clothing/glasses/sunglasses/sechud/goggles,
 		/obj/item/clothing/accessory/solgov/department/security/marine,
 		/obj/item/clothing/head/beret/sec/guardcom,
