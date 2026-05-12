@@ -169,8 +169,9 @@
 
 /mob/living/carbon/human/scp049/on_update_icon()
 	if(lying || resting)
-		var/matrix/M =  matrix()
+		var/matrix/M = matrix()
 		transform = M.Turn(90)
+		Weaken(5)
 	else
 		transform = null
 	return
