@@ -616,7 +616,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 	if (config && config.hostedby)
 		s += "<br>"
 		s += "<br>"
-		s += "<font color="#FF0000" size="10">Hosted by <b>[config.hostedby]</b></font>"
+		s += "<font color=\"#FF0000\" size=\"10\">Hosted by <b>[config.hostedby]</b></font>"
 
 	if (src.status != s)
 		src.status = s
