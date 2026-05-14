@@ -97,7 +97,7 @@
 		"hard-to-destroy reptile",
 		SCP_KETER,
 		"682",
-		SCP_PLAYABLE|SCP_ROLEPLAY
+		SCP_PLAYABLE
 	)
 
 	add_verb(src, /client/proc/scpooc)
