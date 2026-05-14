@@ -76,6 +76,10 @@
 		weakened = 0
 	return 0
 
+/mob/living/carbon/human/scp1678/succumb()
+	to_chat(src, SPAN_WARNING("You cannot succumb!"))
+	return
+
 /mob/living/carbon/human/scp1678/Life()
 	. = ..()
 
@@ -155,8 +159,7 @@
 // Death
 // ==================================================================
 
-/mob/living/carbon/human/scp1678/death(gibbed)
-	visible_message(SPAN_DANGER("[src] collapses and crumbles into dust!"))
+/mob/living/carbon/human/scp1678/death(gibbed,deathmessage="disappeared into thin air...", show_dead_message = "You have died.")
 	playsound(get_turf(src), 'sounds/scp/1678/whistle.ogg', 30, 1)
 	qdel(src)
 

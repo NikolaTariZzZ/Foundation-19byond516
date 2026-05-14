@@ -48,6 +48,8 @@
 
 	var/turf/start_turf = null
 
+	can_rest = FALSE // cant resting
+
 /mob/living/carbon/human/scp049/Initialize(mapload, new_species = "SCP-049")
 	. = ..()
 	SCP = new /datum/scp(
@@ -166,15 +168,6 @@
 	visible_message("\The [src] slices \the [A]'s controls[check ? ", ripping it open!" : ", breaking it!"]")
 
 //Overrides
-
-/mob/living/carbon/human/scp049/on_update_icon()
-	if(lying || resting)
-		var/matrix/M =  matrix()
-		transform = M.Turn(90)
-	else
-		transform = null
-	return
-
 /mob/living/carbon/human/scp049/Life()
 	. = ..()
 
