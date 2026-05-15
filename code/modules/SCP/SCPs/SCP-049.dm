@@ -60,7 +60,7 @@
 		SCP_PLAYABLE|SCP_ROLEPLAY
 	)
 
-	add_verb(src, /client/proc/scpooc)
+	add_verb(src, /client/proc/aooc)
 
 	SCP.min_time = 10 MINUTES
 	SCP.min_playercount = 10 //mostly a RP scp, cant escape as soon as they spawn in

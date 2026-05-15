@@ -8,7 +8,7 @@
 	extended_desc = "Program for programming crew ID cards."
 	requires_ntnet = FALSE
 	size = 8
-	var/operating_access_types = ACCESS_TYPE_NONE | ACCESS_TYPE_STATION | ACCESS_TYPE_CENTCOM
+	var/operating_access_types = ACCESS_TYPE_NONE | ACCESS_TYPE_STATION | ACCESS_TYPE_CENTCOM | ACCESS_TYPE_INNATE | ACCESS_TYPE_CONTAINMENT | ACCESS_TYPE_UNGOC
 /datum/nano_module/program/card_mod
 	name = "ID card modification program"
 	var/mod_mode = 1
@@ -92,11 +92,13 @@
 /datum/nano_module/program/card_mod/proc/format_jobs(list/jobs)
 	var/obj/item/card/id/id_card = program.computer.card_slot?.stored_card
 	var/list/formatted = list()
-	for(var/job in jobs)
+	for(var/job_title in jobs)
+		if(!istext(job_title))
+			continue
 		formatted.Add(list(list(
-			"display_name" = replacetext(job, " ", "&nbsp"),
+			"display_name" = replacetext(job_title, " ", "&nbsp"),
 			"target_rank" = id_card?.assignment ? id_card.assignment : "Unassigned",
-			"job" = job)))
+			"job" = job_title)))
 
 	return formatted
 
@@ -231,8 +233,11 @@
 
 				callHook("reassign_employee", list(id_card))
 		if("access")
+			if(!authorized(user_id_card))
+				to_chat(usr, SPAN_WARNING("Access denied."))
+				return
 			if(href_list["allowed"] && computer && program_has_access(user, 1) && id_card)
-				var/access_type = href_list["access_target"]
+				var/access_type = text2num(href_list["access_target"])
 				var/access_allowed = text2num(href_list["allowed"])
 				if(access_type in get_access_ids(operating_access_types))
 					for(var/access in user_id_card.access)

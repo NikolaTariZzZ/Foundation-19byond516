@@ -108,6 +108,16 @@
 
 /mob/living/simple_animal/hostile/scp017/UnarmedAttack(atom/A, bypass_checks)
 	var/turf/Tturf = get_turf(A)
+
+	if(A == src) // cant attack himself
+		return
+
+	if(isstructure(A) || ismachinery(A))
+		return
+
+	if(A.density)
+		return
+
 	if(!bypass_checks)
 		if(!ismovable(A) || A.SCP)
 			return FALSE

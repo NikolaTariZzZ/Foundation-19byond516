@@ -332,10 +332,7 @@
 
 /obj/item/paper/proc/updateinfolinks()
 	info_links = info
-	var/i = 0
-	for(i=1,i<=fields,i++)
-		addtofield(i, "<meta charset='utf-8'><font face=\"[deffont]\"><A href='byond://?src=\ref[src];write=[i]'>write</A></font>", TRUE)
-	info_links = info_links + "<font face=\"[deffont]\"><A href='byond://?src=\ref[src];write=end'>write</A></font>"
+	info_links = info_links + "<font face=\"[deffont]\"><A href='byond://?src=\ref[src];write=1'>write</A></font>"
 
 
 /obj/item/paper/proc/clearpaper()
@@ -423,8 +420,6 @@
 		return
 
 	if(href_list["write"])
-		var/id = href_list["write"]
-
 		if(free_space <= 0)
 			to_chat(usr, SPAN_INFO("There isn't enough space left on \the [src] to write anything."))
 			return
@@ -452,9 +447,13 @@
 
 		if(P.isfancy)
 			isfancy = TRUE
-		sanitize()
-		var/t = stripped_multiline_input(usr, "Enter what you want to write", "Write", null, 5000)//tgui_input_text(usr, "Enter what you want to write:", "Write", null, free_space, TRUE, trim = FALSE)
-		if(!t)
+
+		// Decode existing content for editing
+		var/oldtext = html_decode(info)
+		oldtext = replacetext(oldtext, "\[br\]", "\n")
+
+		var/newtext = stripped_multiline_input(usr, "Editing '[name]'. You may use most tags used in paper formatting:", "Text Editor", oldtext, MAX_PAPER_MESSAGE_LEN, TRUE, no_trim = FALSE)
+		if(!newtext)
 			return
 
 		// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
@@ -462,22 +461,19 @@
 			return
 
 		var/last_fields_value = fields
-		t = parsepencode(t, I, usr, iscrayon, isfancy) // Encode everything from pencode to html
+		var/new_info = parsepencode(newtext, I, usr, iscrayon, isfancy) // Encode everything from pencode to html
 
 		if(fields > MAX_PAPER_FIELDS)
 			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			fields = last_fields_value
 			return
 
-		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
-		else
-			info += t // Oh, he wants to edit to the end of the file, let him.
-			updateinfolinks()
+		info = new_info
+		updateinfolinks()
 
 		last_modified_ckey = usr.ckey
 
-		update_space(t)
+		update_space(new_info)
 
 		show_content(usr, editable = TRUE)
 		playsound(src, pick('sounds/effects/pen1.ogg','sounds/effects/pen2.ogg'), 10)
