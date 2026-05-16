@@ -188,6 +188,7 @@
 	var/heal_amount = -max((base_regen * (cured_count * regen_multiply)), base_regen)
 	adjustBruteLoss(heal_amount)
 
+
 /mob/living/carbon/human/scp049/UnarmedAttack(atom/target as obj|mob)
 	if(!istype(target))
 		return
@@ -222,7 +223,7 @@
 		if(I_HURT)
 			if(H.stat == DEAD)
 				to_chat(src, SPAN_NOTICE("They are ready for your cure."))
-			else if(can_touch_bare_skin(H))
+			else if(can_touch_hazmat_bare_skin(H))
 				visible_message(SPAN_DANGER(SPAN_ITALIC("[src] reaches towards [H]!")))
 				AttackVoiceLine()
 				H.death(deathmessage = "suddenly becomes very still...", show_dead_message = "You have been killed by SCP-[SCP.designation]. Be patient as you may yet be cured...")
